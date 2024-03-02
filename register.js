@@ -133,18 +133,6 @@ async function Hashing(originalPassword) {
     })
 }
 
-function deleteUserString(email){
-    let sql = `DELETE FROM users WHERE email = '${email}'`
-    db.query(sql, (err)=>{
-        if(err){
-            console.log('delete wrong registration error')
-            throw err
-        }
-        console.log('delete wrong registration success')
-    })
-
-}
-
 //try to refactor it in further
 registerRouter.post('/add', (req,res) => {
     if(req.session.user){
