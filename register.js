@@ -46,6 +46,7 @@ let orders = 'CREATE TABLE IF NOT EXISTS orders (id int AUTO_INCREMENT, price VA
 
 //adding admain user by default with data from unttracked credentails
 const credentials = require('./credentials')
+const Hashing = require('./hashing');
 
 const AdminUsername = credentials.username
 const AdminPassword = credentials.password
@@ -120,7 +121,11 @@ registerRouter.get('/', (req,res) => {
 })
 
 //asynchronious function for hashing passwords (returns promise ---> handle with .then)
-async function Hashing(originalPassword) {
+/*async function Hashing(originalPassword) {
+    if (typeof originalPassword !== 'string') {
+        throw new Error('Password must be a string');
+    }
+
     const saltRounds = 10
     return bcrypt.hash(originalPassword, saltRounds)
     .then((hashedPassword) => {
@@ -131,7 +136,7 @@ async function Hashing(originalPassword) {
     .catch((err) => {
         throw err
     })
-}
+}*/
 
 //try to refactor it in further
 registerRouter.post('/add', (req,res) => {
@@ -178,7 +183,7 @@ registerRouter.post('/add', (req,res) => {
                     req.session.role = 'admin'
                 } else {
                     req.session.role = 'user'
-                               }
+                }
                                
                 res.status(201).json({ message: 'user added' });
             })
@@ -191,7 +196,9 @@ registerRouter.post('/add', (req,res) => {
 
 })
 
-async function isMatch(FoundPassword, found, res, req){
+const isMatch = require('./matching-check')
+
+/*async function isMatch(FoundPassword, found, res, req){
     console.log("FoundPassword: ", FoundPassword , "found.password: ",found.password)
     try{
         //the order of input into bcrypt matters!
@@ -220,7 +227,7 @@ async function isMatch(FoundPassword, found, res, req){
         console.error(err)
         return res.status(500).json({ error: 'server error' })
     }
-}
+}*/
 
 registerRouter.post('/log-in', (req,res) => {
     if(req.session.user){
@@ -375,14 +382,14 @@ registerRouter.post('/hashing', (req, res) => {
 
             //encoding signature
             const sign_string = private_key + data + private_key
-            console.log(sign_string)
+            //console.log(sign_string)
             const hash = crypto.createHash('sha1').update(sign_string).digest('bin')
-            console.log(hash)
+            //console.log(hash)
             const signature = Buffer.from(hash).toString('base64')
-            console.log(signature)
+            //console.log(signature)
             const passData = {data: data , signature: signature}
-            console.log(passData.data)
-            console.log(passData.signature)
+            //console.log(passData.data)
+            //console.log(passData.signature)
             return res.status(200).json(passData)
             })
     }

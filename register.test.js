@@ -1,10 +1,7 @@
-const axios = require('axios');
-//const register = require('../register.js');
-const bcrypt = require('bcrypt');
 const express = require('express');
+const mysql = require('mysql')
 const request = require('supertest');
 const registerRouter = require('./register.js')
-//const { Hashing } = require('../register');
 
 describe('Register Router', () => {
   let app;
@@ -23,10 +20,41 @@ describe('Register Router', () => {
     const response = await request(app).get('/');
     expect(response.statusCode).toBe(200);
     expect(response.text).toContain('<h1>Works</h1>');
+  });  
+});
+
+/*describe('Register Router Register', () => {
+  let app;
+
+  beforeEach(() => {
+    app = express();
+    app.use(express.json());
+    app.use('/add', registerRouter);
   });
 
-  // Add more test cases for other routes and functions
-});
+  afterEach(() => {
+    // Clean up
+  });
+*/
+  /*it('should respond with "Works" on GET /', async () => {
+    //mocking request object
+    const req = {
+      session: {},
+      body: {
+        username: 'test',
+        usermail: 'test@email.com',
+        userpassword: 'testpassword'
+      }
+    }
+    /*const res = {
+      status: jest.fn(() => res),
+      json: jest.fn()
+    }*/
+/*
+    await request(app).post('/add')
+  //  expect(res.json).toHaveBeenCalledWith({ message: 'user added' });
+  });  
+});*/
 
 //hashing
 /*describe('Hashing password function', () => {
