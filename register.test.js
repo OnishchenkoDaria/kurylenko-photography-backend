@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql')
+//const mysql = require('mysql')
 const request = require('supertest');
 const registerRouter = require('./register.js')
 
@@ -16,7 +16,7 @@ describe('Register Router', () => {
     // Clean up
   });
 
-  it('should respond with "Works" on GET /', async () => {
+  test('should respond with "Works" on GET /', async () => {
     const response = await request(app).get('/');
     expect(response.statusCode).toBe(200);
     expect(response.text).toContain('<h1>Works</h1>');

@@ -24,13 +24,13 @@ describe('isMatch function', () => {
         password: '$2b$10$8nhaydQcuyVegD5h33wOKepiKhRPwHh1EFCGprI3s5DEjtmKlYySW', // bcrypt hash of 'testPassword'
         name: 'testUser',
         email: 'test@email.com'
-    };
+    }
 
-    it('should throw error if input values are empty', async () => {
+    test('should throw error if input values are empty', async () => {
         await expect(isMatch('', found, res, req)).rejects.toThrowError('Input values should be not empty')
-    });
+    })
 
-    it('should return login passed message with user role if passwords match and user is not an admin', async () => {
+    test('should return login passed message with user role if passwords match and user is not an admin', async () => {
     bcrypt.compare.mockResolvedValueOnce(true)
     await isMatch(FoundPassword, found, res, req)
         
@@ -40,9 +40,9 @@ describe('isMatch function', () => {
         
     expect(res.status).toHaveBeenCalledWith(201)
     expect(res.json).toHaveBeenCalledWith({ message: 'login passed' })
-});
+    })
 
-it('should return login passed message with admin role if passwords match and user is an admin', async () => {
+    test('should return login passed message with admin role if passwords match and user is an admin', async () => {
     bcrypt.compare.mockResolvedValueOnce(true);
     //substituding the avarage uder  email in a sample info with the admin email
     const foundAdmin = { ...found, email: AdminEmail }
@@ -54,21 +54,21 @@ it('should return login passed message with admin role if passwords match and us
     
     expect(res.status).toHaveBeenCalledWith(201)
     expect(res.json).toHaveBeenCalledWith({ message: 'login passed' })
-});
+    })
 
-    it('should return login failed message if passwords do not match', async () => {
+    test('should return login failed message if passwords do not match', async () => {
         bcrypt.compare.mockResolvedValueOnce(false)
         await isMatch(FoundPassword, found, res, req)
         
         expect(res.status).toHaveBeenCalledWith(409)
         expect(res.json).toHaveBeenCalledWith({ error: 'login failed' })
-    });
+    })
 
-    it('should return server error message if an error occurs during comparison', async () => {
+    test('should return server error message if an error occurs during comparison', async () => {
         bcrypt.compare.mockRejectedValueOnce(new Error('Comparison error'))
         await isMatch(FoundPassword, found, res, req)
         
         expect(res.status).toHaveBeenCalledWith(500)
         expect(res.json).toHaveBeenCalledWith({ error: 'server error' })
-    });
-});
+    })
+})

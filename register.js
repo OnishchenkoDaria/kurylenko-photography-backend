@@ -10,38 +10,29 @@ const sessions = require('express-session');
 
 //header("Access-Control-Allow-Origin: http://localhost:5173");
 //creating our mysql database + connecting it with node (next function)
-const db = mysql.createConnection({
+
+const {db, connectDB, createUserTable, createOrdersTable, insertAdminByDefault} = require('./db')
+
+/*const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'users'
-})
-
-db.connect(err => {
+})*/
+connectDB(db);
+/*db.connect(err => {
     if (err) {
         console.error('MySQL Connection Error:', err);
         throw err;
     }
     console.log('MySQL Connected');
-});
+});*/
 
 //old version: CREATE TABLE IF NOT EXISTS users (id int AUTO_INCREMENT, name VARCHAR (255), password VARCHAR (255), email VARCHAR (255) UNIQUE, PRIMARY KEY(id))
-let table = 'CREATE TABLE IF NOT EXISTS users (id int AUTO_INCREMENT, name VARCHAR (255), password VARCHAR (255), email VARCHAR (255), PRIMARY KEY(id))'
-    db.query(table, err => {
-        if(err){
-        throw err
-        }
-        console.log('users table created')
-});
+createUserTable(db);
 
 //orders table
-let orders = 'CREATE TABLE IF NOT EXISTS orders (id int AUTO_INCREMENT, price VARCHAR (255), email VARCHAR (255), date VARCHAR (255), PRIMARY KEY(id))'
-    db.query(orders, err => {
-        if(err){
-        throw err
-        }
-        console.log('orders table created')
-});
+createOrdersTable(db);
 
 
 //adding admain user by default with data from unttracked credentails
@@ -52,7 +43,7 @@ const AdminUsername = credentials.username
 const AdminPassword = credentials.password
 const AdminEmail = credentials.email
 
-const checkEmpty = `SELECT COUNT(*) AS count FROM users`
+/*const checkEmpty = `SELECT COUNT(*) AS count FROM users`
 db.query(checkEmpty, (queryErr, results)=> {
     if(queryErr){
         console.error('Error executing query ', queryErr)
@@ -80,7 +71,9 @@ db.query(checkEmpty, (queryErr, results)=> {
             console.log('admin user was already added before')
         }
     }
-})
+})*/
+
+insertAdminByDefault(db);
 
 const registerRouter = express.Router();
 
