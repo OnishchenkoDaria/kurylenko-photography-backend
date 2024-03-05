@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.1% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/39</span>
+                <span class='fraction'>30/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/12</span>
+                <span class='fraction'>9/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.63% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/11</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.1% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/39</span>
+                <span class='fraction'>30/40</span>
             </div>
         
             
@@ -139,8 +139,7 @@
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
 <a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a>
-<a name='L78'></a><a href='#L78'>78</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,16 +185,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -211,7 +209,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,31 +262,30 @@ function createOrdersTable(db) {
 &nbsp;
 function insertAdminByDefault(db) {
     const checkEmpty = `SELECT COUNT(*) AS count FROM users`
-    db.query(checkEmpty, <span class="fstat-no" title="function not covered" >(q</span>ueryErr, results)=&gt; {
-<span class="cstat-no" title="statement not covered" >        if(queryErr){</span>
-<span class="cstat-no" title="statement not covered" >            console.error('Error executing query ', queryErr)</span>
+    db.query(checkEmpty, (queryErr, results)=&gt; {
+        if(queryErr){
+            console.error('Error executing query ', queryErr)
         } else{
-            const rowCount = <span class="cstat-no" title="statement not covered" >results[0].count</span>
-<span class="cstat-no" title="statement not covered" >            if(rowCount === 0){</span>
-<span class="cstat-no" title="statement not covered" >                Hashing(AdminPassword)</span>
-                .then(<span class="fstat-no" title="function not covered" >(n</span>ewHashed) =&gt; {
-                // console.log(newHashed)
+            const rowCount = results[0].count
+            <span class="missing-if-branch" title="if path not taken" >I</span>if(rowCount === 0){
+                const newHashed = <span class="cstat-no" title="statement not covered" >Hashing(AdminPassword)</span>
+<span class="cstat-no" title="statement not covered" >                try {</span>
                     const insertAdmin = <span class="cstat-no" title="statement not covered" >'INSERT INTO users (name, password, email) VALUES (?, ?, ?)'</span>
                     const values = <span class="cstat-no" title="statement not covered" >[AdminUsername, newHashed, AdminEmail];</span>
-<span class="cstat-no" title="statement not covered" >                    db.query(insertAdmin, values, <span class="fstat-no" title="function not covered" >(i</span>nsertErr, results)=&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                    db.query(insertAdmin, values, <span class="fstat-no" title="function not covered" >(i</span>nsertErr)=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >                        if (insertErr) {</span>
 <span class="cstat-no" title="statement not covered" >                            console.error('Error inserting user:', insertErr)</span>
                         } else {
 <span class="cstat-no" title="statement not covered" >                            console.log(`User inserted`)</span>
                         }
-                    })
-                })
-                .catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
+                    })  
+                }
+                catch {
 <span class="cstat-no" title="statement not covered" >                    console.error(error);</span>
 <span class="cstat-no" title="statement not covered" >                    return res.status(500).json({ error: 'server error' });</span>
-                })
+                }
             } else {
-<span class="cstat-no" title="statement not covered" >                console.log('admin user was already added before')</span>
+                console.log('admin user was already added before')
             }
         }
     })
@@ -301,7 +298,7 @@ module.exports = {db, connectDB, createUserTable, createOrdersTable, insertAdmin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-04T21:52:02.991Z
+                at 2024-03-05T21:50:19.605Z
             </div>
         <script src="prettify.js"></script>
         <script>

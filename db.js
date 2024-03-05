@@ -51,23 +51,22 @@ function insertAdminByDefault(db) {
         } else{
             const rowCount = results[0].count
             if(rowCount === 0){
-                Hashing(AdminPassword)
-                .then((newHashed) => {
-                // console.log(newHashed)
+                const newHashed = Hashing(AdminPassword)
+                try {
                     const insertAdmin = 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)'
                     const values = [AdminUsername, newHashed, AdminEmail];
-                    db.query(insertAdmin, values, (insertErr, results)=> {
+                    db.query(insertAdmin, values, (insertErr)=> {
                         if (insertErr) {
                             console.error('Error inserting user:', insertErr)
                         } else {
                             console.log(`User inserted`)
                         }
-                    })
-                })
-                .catch((error) => {
+                    })  
+                }
+                catch {
                     console.error(error);
                     return res.status(500).json({ error: 'server error' });
-                })
+                }
             } else {
                 console.log('admin user was already added before')
             }
