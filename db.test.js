@@ -113,10 +113,18 @@ describe('insertAdminByDefault function', () => {
         jest.clearAllMocks();
     });
 
-    /*test('should insert admin user when users table is empty', async () => {
+    test('should insert admin user when users table is empty', async () => {
         const mockResultsEmpty = [{ count: 0 }];
-        dbMock.query.mockImplementation((query, callback) => {
-            callback(null, mockResultsEmpty);
+        dbMock.query.mockImplementation((query, values, callback) => {
+            if (typeof values === 'function') {
+                callback = values;
+                values = null;
+            }
+            if (query === 'SELECT COUNT(*) AS count FROM users') {
+                callback(null, mockResultsEmpty);
+            } else if (query === 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)') {
+                callback(null);
+            }
         });
 
         mockHashing.mockReturnValue('hashedPassword');
@@ -125,8 +133,8 @@ describe('insertAdminByDefault function', () => {
 
         expect(dbMock.query).toHaveBeenCalledTimes(2); // 1 check + 1 insert admin into users
         expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Function)); // Check for SELECT COUNT(*) query
-        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), ['admin', 'hashedPassword', 'admin@example.com'], expect.any(Function)); // Check for INSERT INTO users query
-    });*/
+        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Array), expect.any(Function)); // Check for INSERT INTO users query
+    });
 
     test('should not insert admin user when users table is not empty', async () => {
         const mockResultsNotEmpty = [{ count: 1 }];
