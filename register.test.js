@@ -1,5 +1,4 @@
-const express = require('express');
-//const mysql = require('mysql')
+const express = require('express')
 const request = require('supertest');
 const registerRouter = require('./register.js')
 

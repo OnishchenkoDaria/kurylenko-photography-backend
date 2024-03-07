@@ -9,7 +9,7 @@ describe('Connecting database', () => {
     
     test('should log "MySQL Connected" if success', () => {
         const dbMock = {
-            connect: jest.fn(callback => callback(null)) //defining to return null in stead of null
+            connect: jest.fn(callback => callback(null)) //defining to return null in stead of undefined
         }
 
         // Mock spy console.log
