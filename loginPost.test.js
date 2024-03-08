@@ -1,5 +1,9 @@
 const LoginUser = require('./loginPost')
-const {db} = require('./db.js') 
+const {db} = require('./db.js')
+const isMatch = require('./matching-check')
+
+//mocking the module of isMatch and replacing the implementation with jest.fn()
+jest.mock('./matching-check' , () => jest.fn())
 
 describe('Login function', () => {
     let req , res, status, json, query, err, result
@@ -42,5 +46,23 @@ describe('Login function', () => {
 
         expect(status).toHaveBeenCalledWith(500)
         expect(json).toHaveBeenCalledWith({ error: 'server error' })
+    })
+
+    test('should return the error of unsuccessful find of email in db', () => {
+        query.mockImplementation((_, callback) => callback(err, result))
+
+        LoginUser(req,res)
+
+        expect(status).toHaveBeenCalledWith(409)
+        expect(json).toHaveBeenCalledWith({ error: 'email not found' })
+    })
+
+    test('should pass data to isMatch', () => {
+        result = [{password: 'hashed'}]
+        query.mockImplementation((_,callback) => callback(null, result))
+
+        LoginUser(req, res)
+
+        expect(isMatch).toHaveBeenCalledWith(req.body.userpassword, result[0], res, req)
     })
 })
