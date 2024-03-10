@@ -20,7 +20,6 @@ createOrdersTable(db);
 
 //adding admain user by default with data from unttracked credentails
 const credentials = require('./credentials')
-const Hashing = require('./hashing');
 
 //const AdminUsername = credentials.username
 //const AdminPassword = credentials.password

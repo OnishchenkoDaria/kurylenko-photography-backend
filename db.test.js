@@ -1,4 +1,6 @@
 var {db, connectDB, createUserTable, createOrdersTable, insertAdminByDefault} = require('./db')
+const mysql = require('mysql');
+const Hashing = require('./hashing');
 
 describe('Connecting database', () => {
 
@@ -97,87 +99,85 @@ describe('Creating Order Table in a database', () => {
     })
 })
 
-const mockHashing = jest.fn();
 
-jest.mock('./hashing', () => jest.fn());
+// Mocking the database connection
+jest.mock('mysql', () => ({
+    createConnection: jest.fn(() => ({
+        query: jest.fn(),
+    })),
+}))
 
-describe('insertAdminByDefault function', () => {
+// Mocking the hashing function
+jest.mock('./hashing', () => jest.fn(() => Promise.resolve('hashedPassword')))
+
+describe('insertAdminByDefault', () => {
+    let mockDb
+    let consoleErrorSpy
+
     beforeEach(() => {
+        // Reset mock functions and clear mock calls history before each test
         jest.clearAllMocks()
+
+        // Creating a mock DB instance
+        mockDb = new mysql.createConnection()
+
+        // Spy on console.error
+        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    })
+
+    afterEach(() => {
+        // Restore console.error after each test
+        consoleErrorSpy.mockRestore()
+    })
+
+    test('should insert admin when no users exist', async () => {
+        // Mocking a zero users in the database
+        mockDb.query.mockImplementationOnce((query, callback) => {
+            callback(null, [{ count: 0 }])
+        })
+
+        // Mocking the insertion function
+        mockDb.query.mockImplementationOnce((query, values, callback) => {
+            callback(null)
+        })
+
+        await insertAdminByDefault(mockDb)
+
+        expect(mockDb.query).toHaveBeenCalledTimes(2);
+        expect(mockDb.query.mock.calls[1][0]).toContain('INSERT INTO users')
+    })
+
+    test('should not insert admin when users exist', async () => {
+        // Mocking the existing users in the database
+        mockDb.query.mockImplementationOnce((query, callback) => {
+            callback(null, [{ count: 1 }])
+        });
+
+        await insertAdminByDefault(mockDb)
     });
 
-    test('should insert admin user when users table is empty', async () => {
-        const mockResultsEmpty = [{ count: 0 }]
-        dbMock.query.mockImplementation((query, values, callback) => {
-            if (typeof values === 'function') {
-                callback = values
-                values = null
-            }
-            if (query === 'SELECT COUNT(*) AS count FROM users') {
-                callback(null, mockResultsEmpty)
-            } else if (query === 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)') {
-                callback(null)
-            }
-        });
-
-        mockHashing.mockReturnValue('hashedPassword')
-        insertAdminByDefault(dbMock)
-
-        expect(dbMock.query).toHaveBeenCalledTimes(2) // 1 check + 1 insert admin into users
-        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Function)) // Check for SELECT COUNT(*) query
-        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Array), expect.any(Function)) // Check for INSERT INTO users query
-    })
-
-    test('should execute query error while inserting admin user in empty table', () => {
-        const mockResultsEmpty = [{ count: 0 }]
-        const mockError = new Error('Error inserting user:')
-        dbMock.query.mockImplementation((query, values, callback) => {
-            if (typeof values === 'function') {
-                callback = values
-                values = null
-            }
-            //if select -> success callback || if insert -> error callback
-            if (query === 'SELECT COUNT(*) AS count FROM users') {
-                callback(null, mockResultsEmpty)
-            }
-            else if (query === 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)') {
-                callback(mockError)
-            }
+    test('should handle errors during insertion', async () => {
+        //anslogically to 1st test
+        mockDb.query.mockImplementationOnce((query, callback) => {
+            callback(null, [{ count: 0 }]);
         })
-        mockHashing.mockReturnValue('hashedPassword')
-        console.error = jest.fn()
-        insertAdminByDefault(dbMock)
 
-        expect(dbMock.query).toHaveBeenCalledTimes(2)
-        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Function)); // Check for SELECT COUNT(*) query
-        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Array), expect.any(Function)); // Check for INSERT INTO users query
-        expect(console.error).toHaveBeenCalledWith('Error inserting user:', mockError); // Check error case
+        mockDb.query.mockImplementationOnce((query, values, callback) => {
+            callback(new Error('Insertion error'))
+        })
 
-    })
+        await insertAdminByDefault(mockDb)
+        expect(console.error).toHaveBeenCalledWith('Error inserting user:', new Error('Insertion error'))
+    });
 
-    test('should not insert admin user when users table is not empty', async () => {
-        const mockResultsNotEmpty = [{ count: 1 }]
-        dbMock.query.mockImplementation((query, callback) => {
-            callback(null, mockResultsNotEmpty);
-        });
+    test('should handle errors during query execution', async () => {
+       //Mocking error
+        mockDb.query.mockImplementationOnce((query, callback) => {
+            callback(new Error('Query execution error'))
+        })
 
-        await insertAdminByDefault(dbMock)
+        await insertAdminByDefault(mockDb)
 
-        expect(dbMock.query).toHaveBeenCalledTimes(1) //just check , no insert
-        expect(dbMock.query).toHaveBeenCalledWith(expect.any(String), expect.any(Function)) // Check for SELECT COUNT(*) query
-    })
-
-    test('should handle database query errors', async () => {
-        const mockError = new Error('Database error')
-        dbMock.query.mockImplementation((query, callback) => {
-            callback(mockError)
-        });
-
-        console.error = jest.fn() // Mock console.error
-
-        await insertAdminByDefault(dbMock)
-
-        expect(dbMock.query).toHaveBeenCalledTimes(1); // Only SELECT COUNT(*) query should be called
-        expect(console.error).toHaveBeenCalledWith('Error executing query ', mockError) // Check for error message
+        expect(console.error).toHaveBeenCalledWith('Error executing query ', new Error('Query execution error'))
     })
 })

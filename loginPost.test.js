@@ -13,7 +13,7 @@ describe('Login function', () => {
         req = {
             session: {},
             body: {
-                username: 'test@gmail.com',
+                useremail: 'test@gmail.com',
                 userpassword: 'testpassword'
             }
         }

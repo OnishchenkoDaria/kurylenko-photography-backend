@@ -24,38 +24,38 @@ function RegisterNewUser( req, res){
         if (result.length > 0) {
             return res.status(409).json({ error: 'email in use' });
         }
-   
-    //handling hashing
     
-    Hashing(password)
-        .then((newHashedPassword) => {
-            console.log(newHashedPassword)
-            //initialization of the post object ---> inserting into mysql table with post
-            let post = {name: name , password: newHashedPassword, email: email}
-            
-            //mysql syntax for inserting
-            let sql = 'INSERT INTO users SET ?'
-            db.query(sql,post, (err) => {
-                if(err){
-                    throw err
-                }
-                //success case
-                console.log('user added!')
-                req.session.user = post.name
-                req.session.email = post.email
-                if(post.email === AdminEmail){
-                    req.session.role = 'admin'
-                } else {
-                    req.session.role = 'user'
-                }
-                               
-                res.status(201).json({ message: 'user added' });
+        //handling hashing
+    
+        Hashing(password)
+            .then((newHashedPassword) => {
+                console.log(newHashedPassword)
+                //initialization of the post object ---> inserting into mysql table with post
+                let post = {name: name , password: newHashedPassword, email: email}
+                
+                //mysql syntax for inserting
+                let sql = 'INSERT INTO users SET ?'
+                db.query(sql,post, (err) => {
+                    if(err){
+                        throw err
+                    }
+                    //success case
+                    console.log('user added!')
+                    req.session.user = post.name
+                    req.session.email = post.email
+                    if(post.email === AdminEmail){
+                        req.session.role = 'admin'
+                    } else {
+                        req.session.role = 'user'
+                    }
+                                
+                    res.status(201).json({ message: 'user added' });
+                })
             })
-        })
-        .catch((error) => {
-            console.error(error);
-            return res.status(500).json({ error: 'server error' });
-        })
+            .catch((error) => {
+                console.error(error);
+                return res.status(500).json({ error: 'server error' });
+            })
     })
 }
 

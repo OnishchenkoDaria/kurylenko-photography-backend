@@ -51,16 +51,19 @@ function insertAdminByDefault(db) {
         } else{
             const rowCount = results[0].count
             if(rowCount === 0){
-                const newHashed = Hashing(AdminPassword)
-                const insertAdmin = 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)'
-                const values = [AdminUsername, newHashed, AdminEmail];
-                db.query(insertAdmin, values, (insertErr)=> {
-                if (insertErr) {
-                    console.error('Error inserting user:', insertErr)
-                } else {
-                        console.log(`User inserted`)
-                    }
+                Hashing(AdminPassword)
+                .then((newHashed) => {
+                    const insertAdmin = 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)'
+                    const values = [AdminUsername, newHashed, AdminEmail];
+                    db.query(insertAdmin, values, (insertErr)=> {
+                        if (insertErr) {
+                            console.error('Error inserting user:', insertErr)
+                        } else {
+                            console.log(`User inserted`)
+                        }
+                    })
                 })
+                // no catch block needed (catching is handeled in hashing.js)
             } else {
                 console.log('admin user was already added before')
             }

@@ -11,15 +11,12 @@ async function Hashing(originalPassword) {
 
     const saltRounds = 10
 
-    return bcrypt.hash(originalPassword, saltRounds)
-    .then((hashedPassword) => {
-            return hashedPassword
-        })
-
-    //catching errors
-    .catch((err) => {
+    try {
+        const hashedPassword = await bcrypt.hash(originalPassword, saltRounds)
+        return hashedPassword
+    } catch (err) {
         throw err
-    })
+    }
 }
 
-module.exports = Hashing;
+module.exports = Hashing
