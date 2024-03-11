@@ -69,20 +69,24 @@ describe('RegisterNewUser function', () => {
 
         // Mocking the database query to return no user with the input email
         query.mockImplementationOnce((_, callback) => callback(null, []))
-
+        query.mockImplementationOnce((_, __, callback) => callback(null, result))
         await RegisterNewUser(req, res)
 
         expect(Hashing).toHaveBeenCalledWith('testpassword')
         expect(query).toHaveBeenCalled()
+        //SEEct and INSERT CALLS
         expect(db.query).toHaveBeenCalled()
-
+        //checking(let sql = 'INSERT INTO users SET ?'
+        //        db.query(sql,post, (err))
+        //callback is not a function
         //returning undefined
-       /* expect(req.session.user).toBe('testname')
-        expect(req.session.email).toBe('test@gmail.com')
-        expect(req.session.role).toBe('user')
+        const { user, email, role } = req.session;
+        expect(user).toBe('testname');
+        expect(email).toBe('test@gmail.com');
+        expect(role).toBe('user');
 
         expect(res.status).toHaveBeenCalledWith(201)
-        expect(res.json).toHaveBeenCalledWith({ message: 'user added' })*/
+        expect(res.json).toHaveBeenCalledWith({ message: 'user added' })
     })
 
 

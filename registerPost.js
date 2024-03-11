@@ -34,17 +34,21 @@ async function RegisterNewUser( req, res){
                 console.log(newHashedPassword)
                 //initialization of the post object ---> inserting into mysql table with post
                 let post = {name: name , password: newHashedPassword, email: email}
-                
+                console.log('orig: '  + name, email, password)
+                console.log('after hash: ' + post.name, post.email, post.password)
                 //mysql syntax for inserting
                 let sql = 'INSERT INTO users SET ?'
                 db.query(sql,post, (err) => {
+                    console.log('passed')
                     if(err){
-                        throw err
+                        console.error(err);
+                        return res.status(500).json({ error: 'server error' });
                     }
                     //success case
                     console.log('user added!')
                     req.session.user = post.name
                     req.session.email = post.email
+                    console.log('session: ' + req.session.user , req.session.email)
                     if(post.email === AdminEmail){
                         req.session.role = 'admin'
                     } else {

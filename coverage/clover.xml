@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1710194005279" clover="3.2.0">
-  <project timestamp="1710194005279" name="All files">
-    <metrics statements="180" coveredstatements="100" conditionals="46" coveredconditionals="14" methods="30" coveredmethods="9" elements="256" coveredelements="123" complexity="0" loc="180" ncloc="180" packages="1" files="6" classes="6"/>
+<coverage generated="1710196057030" clover="3.2.0">
+  <project timestamp="1710196057030" name="All files">
+    <metrics statements="88" coveredstatements="52" conditionals="26" coveredconditionals="8" methods="16" coveredmethods="8" elements="130" coveredelements="68" complexity="0" loc="88" ncloc="88" packages="1" files="4" classes="4"/>
     <file name="credentials" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\credentials">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <line num="1" count="3" type="stmt"/>
+      <line num="1" count="2" type="stmt"/>
     </file>
     <file name="db.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\db.js">
       <metrics statements="37" coveredstatements="15" conditionals="12" coveredconditionals="0" methods="10" coveredmethods="4"/>
@@ -60,111 +60,8 @@
       <line num="18" count="0" type="stmt"/>
       <line num="22" count="1" type="stmt"/>
     </file>
-    <file name="matching-check.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\matching-check.js">
-      <metrics statements="20" coveredstatements="20" conditionals="8" coveredconditionals="8" methods="1" coveredmethods="1"/>
-      <line num="1" count="2" type="stmt"/>
-      <line num="2" count="2" type="stmt"/>
-      <line num="3" count="2" type="stmt"/>
-      <line num="6" count="5" type="cond" truecount="4" falsecount="0"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="11" count="4" type="stmt"/>
-      <line num="14" count="4" type="stmt"/>
-      <line num="15" count="3" type="stmt"/>
-      <line num="16" count="3" type="cond" truecount="2" falsecount="0"/>
-      <line num="17" count="2" type="stmt"/>
-      <line num="18" count="2" type="stmt"/>
-      <line num="20" count="2" type="cond" truecount="2" falsecount="0"/>
-      <line num="21" count="1" type="stmt"/>
-      <line num="23" count="1" type="stmt"/>
-      <line num="26" count="2" type="stmt"/>
-      <line num="30" count="1" type="stmt"/>
-      <line num="34" count="1" type="stmt"/>
-      <line num="35" count="1" type="stmt"/>
-      <line num="36" count="1" type="stmt"/>
-      <line num="40" count="2" type="stmt"/>
-    </file>
-    <file name="register.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\register.js">
-      <metrics statements="77" coveredstatements="39" conditionals="12" coveredconditionals="0" methods="13" coveredmethods="1"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="4" count="1" type="stmt"/>
-      <line num="10" count="1" type="stmt"/>
-      <line num="12" count="1" type="stmt"/>
-      <line num="15" count="1" type="stmt"/>
-      <line num="18" count="1" type="stmt"/>
-      <line num="22" count="1" type="stmt"/>
-      <line num="26" count="1" type="stmt"/>
-      <line num="28" count="1" type="stmt"/>
-      <line num="30" count="1" type="stmt"/>
-      <line num="32" count="1" type="stmt"/>
-      <line num="38" count="1" type="stmt"/>
-      <line num="41" count="1" type="stmt"/>
-      <line num="43" count="1" type="stmt"/>
-      <line num="44" count="1" type="stmt"/>
-      <line num="49" count="1" type="stmt"/>
-      <line num="59" count="1" type="stmt"/>
-      <line num="60" count="1" type="stmt"/>
-      <line num="62" count="1" type="stmt"/>
-      <line num="64" count="1" type="stmt"/>
-      <line num="65" count="0" type="stmt"/>
-      <line num="70" count="1" type="stmt"/>
-      <line num="72" count="1" type="stmt"/>
-      <line num="74" count="0" type="stmt"/>
-      <line num="77" count="1" type="stmt"/>
-      <line num="78" count="1" type="stmt"/>
-      <line num="80" count="1" type="stmt"/>
-      <line num="81" count="0" type="stmt"/>
-      <line num="96" count="1" type="stmt"/>
-      <line num="97" count="0" type="stmt"/>
-      <line num="98" count="0" type="stmt"/>
-      <line num="99" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="100" count="0" type="stmt"/>
-      <line num="103" count="0" type="stmt"/>
-      <line num="107" count="1" type="stmt"/>
-      <line num="108" count="0" type="stmt"/>
-      <line num="109" count="0" type="stmt"/>
-      <line num="112" count="1" type="stmt"/>
-      <line num="115" count="1" type="stmt"/>
-      <line num="116" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="117" count="0" type="stmt"/>
-      <line num="119" count="0" type="stmt"/>
-      <line num="120" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="121" count="0" type="stmt"/>
-      <line num="124" count="0" type="stmt"/>
-      <line num="129" count="1" type="stmt"/>
-      <line num="130" count="1" type="stmt"/>
-      <line num="132" count="1" type="stmt"/>
-      <line num="133" count="0" type="stmt"/>
-      <line num="134" count="0" type="stmt"/>
-      <line num="135" count="0" type="stmt"/>
-      <line num="136" count="0" type="stmt"/>
-      <line num="137" count="0" type="stmt"/>
-      <line num="138" count="0" type="stmt"/>
-      <line num="139" count="0" type="stmt"/>
-      <line num="140" count="0" type="stmt"/>
-      <line num="141" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="142" count="0" type="stmt"/>
-      <line num="144" count="0" type="stmt"/>
-      <line num="148" count="1" type="stmt"/>
-      <line num="149" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="150" count="0" type="stmt"/>
-      <line num="152" count="0" type="stmt"/>
-      <line num="153" count="0" type="stmt"/>
-      <line num="154" count="0" type="stmt"/>
-      <line num="155" count="0" type="stmt"/>
-      <line num="156" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="157" count="0" type="stmt"/>
-      <line num="159" count="0" type="stmt"/>
-      <line num="160" count="0" type="stmt"/>
-      <line num="165" count="1" type="stmt"/>
-      <line num="166" count="1" type="stmt"/>
-      <line num="168" count="1" type="stmt"/>
-      <line num="169" count="0" type="stmt"/>
-      <line num="172" count="1" type="stmt"/>
-    </file>
     <file name="registerPost.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\registerPost.js">
-      <metrics statements="34" coveredstatements="23" conditionals="10" coveredconditionals="6" methods="5" coveredmethods="3"/>
+      <metrics statements="39" coveredstatements="34" conditionals="10" coveredconditionals="8" methods="5" coveredmethods="4"/>
       <line num="1" count="2" type="stmt"/>
       <line num="2" count="2" type="stmt"/>
       <line num="3" count="2" type="stmt"/>
@@ -185,20 +82,25 @@
       <line num="30" count="1" type="stmt"/>
       <line num="34" count="1" type="stmt"/>
       <line num="36" count="1" type="stmt"/>
-      <line num="39" count="1" type="stmt"/>
+      <line num="37" count="1" type="stmt"/>
+      <line num="38" count="1" type="stmt"/>
       <line num="40" count="1" type="stmt"/>
-      <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="42" count="0" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="42" count="1" type="stmt"/>
+      <line num="43" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="44" count="0" type="stmt"/>
       <line num="45" count="0" type="stmt"/>
-      <line num="46" count="0" type="stmt"/>
-      <line num="47" count="0" type="stmt"/>
-      <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="49" count="0" type="stmt"/>
-      <line num="51" count="0" type="stmt"/>
-      <line num="54" count="0" type="stmt"/>
-      <line num="58" count="0" type="stmt"/>
-      <line num="59" count="0" type="stmt"/>
-      <line num="64" count="2" type="stmt"/>
+      <line num="48" count="1" type="stmt"/>
+      <line num="49" count="1" type="stmt"/>
+      <line num="50" count="1" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="52" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="53" count="0" type="stmt"/>
+      <line num="55" count="1" type="stmt"/>
+      <line num="58" count="1" type="stmt"/>
+      <line num="62" count="0" type="stmt"/>
+      <line num="63" count="0" type="stmt"/>
+      <line num="68" count="2" type="stmt"/>
     </file>
   </project>
 </coverage>

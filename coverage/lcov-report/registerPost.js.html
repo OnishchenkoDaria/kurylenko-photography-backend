@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.64% </span>
+                <span class="strong">87.17% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/34</span>
+                <span class='fraction'>34/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/10</span>
+                <span class='fraction'>8/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.64% </span>
+                <span class="strong">87.17% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/34</span>
+                <span class='fraction'>34/39</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -126,7 +126,11 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -162,24 +166,28 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -225,24 +233,28 @@ async function RegisterNewUser( req, res){
                 console.log(newHashedPassword)
                 //initialization of the post object ---&gt; inserting into mysql table with post
                 let post = {name: name , password: newHashedPassword, email: email}
-                
+                console.log('orig: '  + name, email, password)
+                console.log('after hash: ' + post.name, post.email, post.password)
                 //mysql syntax for inserting
                 let sql = 'INSERT INTO users SET ?'
-                db.query(sql,post, <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
-<span class="cstat-no" title="statement not covered" >                    if(err){</span>
-<span class="cstat-no" title="statement not covered" >                        throw err</span>
+                db.query(sql,post, (err) =&gt; {
+                    console.log('passed')
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if(err){
+<span class="cstat-no" title="statement not covered" >                        console.error(err);</span>
+<span class="cstat-no" title="statement not covered" >                        return res.status(500).json({ error: 'server error' });</span>
                     }
                     //success case
-<span class="cstat-no" title="statement not covered" >                    console.log('user added!')</span>
-<span class="cstat-no" title="statement not covered" >                    req.session.user = post.name</span>
-<span class="cstat-no" title="statement not covered" >                    req.session.email = post.email</span>
-<span class="cstat-no" title="statement not covered" >                    if(post.email === AdminEmail){</span>
+                    console.log('user added!')
+                    req.session.user = post.name
+                    req.session.email = post.email
+                    console.log('session: ' + req.session.user , req.session.email)
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if(post.email === AdminEmail){
 <span class="cstat-no" title="statement not covered" >                        req.session.role = 'admin'</span>
                     } else {
-<span class="cstat-no" title="statement not covered" >                        req.session.role = 'user'</span>
+                        req.session.role = 'user'
                     }
                                 
-<span class="cstat-no" title="statement not covered" >                    res.status(201).json({ message: 'user added' });</span>
+                    res.status(201).json({ message: 'user added' });
                 })
             })
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
@@ -259,7 +271,7 @@ module.exports = RegisterNewUser</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-11T21:53:25.239Z
+                at 2024-03-11T22:27:37.015Z
             </div>
         <script src="prettify.js"></script>
         <script>
