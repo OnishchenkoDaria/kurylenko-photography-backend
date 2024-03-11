@@ -3,7 +3,7 @@ const {db} = require('./db')
 const credentials = require('./credentials')
 const AdminEmail = credentials.email
 
-function RegisterNewUser( req, res){
+async function RegisterNewUser( req, res){
     if(req.session.user){
         console.log('an active session is going')
         return res.status(409).json({ error: 'an active session exist' });
@@ -29,6 +29,8 @@ function RegisterNewUser( req, res){
     
         Hashing(password)
             .then((newHashedPassword) => {
+
+                //перенести все з цього .then у функцію, передавшт нароль newHashedPassword, req, res
                 console.log(newHashedPassword)
                 //initialization of the post object ---> inserting into mysql table with post
                 let post = {name: name , password: newHashedPassword, email: email}

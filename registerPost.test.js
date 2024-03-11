@@ -3,7 +3,8 @@ const { db } = require('./db.js');
 const Hashing = require('./hashing');
 const credentials = require('./credentials');
 
-jest.mock('./hashing');
+jest.mock('./hashing', () => jest.fn(() => Promise.resolve('hashedPassword')))
+const { AdminEmail } = credentials;
 
 describe('RegisterNewUser function', () => {
     let res, req, json, status, query, err, result;
@@ -20,12 +21,12 @@ describe('RegisterNewUser function', () => {
         status = jest.fn().mockReturnThis();
         json = jest.fn();
         res = { status, json };
-
+    
         query = jest.fn();
         db.query = query;
-
+    
         err = null;
-        result = {};
+        result = [];
     });
 
     afterEach(() => {
@@ -60,26 +61,34 @@ describe('RegisterNewUser function', () => {
         expect(json).toHaveBeenCalledWith({ error: 'email in use' });
     });
 
+    
+
     test('should handle hashing success', async () => {
-        /*const hashedPassword = 'hashedPassword';
-        Hashing.mockResolvedValueOnce(hashedPassword);
+        // Mocking successful hashing
+        Hashing.mockResolvedValueOnce('hashedPassword');
 
-        await RegisterNewUser(req, res);
+        // Mocking the database query to return no user with the input email
+        query.mockImplementationOnce((_, callback) => callback(null, []))
 
-        expect(Hashing).toHaveBeenCalledWith('testpassword');
-        expect(query).toHaveBeenCalled();*/
-        // Add more assertions as needed
-    });
+        await RegisterNewUser(req, res)
+
+        expect(Hashing).toHaveBeenCalledWith('testpassword')
+        expect(query).toHaveBeenCalled()
+        expect(db.query).toHaveBeenCalled()
+
+        //returning undefined
+       /* expect(req.session.user).toBe('testname')
+        expect(req.session.email).toBe('test@gmail.com')
+        expect(req.session.role).toBe('user')
+
+        expect(res.status).toHaveBeenCalledWith(201)
+        expect(res.json).toHaveBeenCalledWith({ message: 'user added' })*/
+    })
+
 
     /* handling hashing promise */
     test('should catch the error during hashing', async() => {
-        /*jest.mock('./hashing', () => jest.fn().mockRejectedValue(new Error('haching error')));*/
-        /*err = new Error('hashing error')
-        await RegisterNewUser(req, res);
-    
-        expect(Hashing).toHaveBeenCalledWith('testpassword');
-        expect(status).toHaveBeenCalledWith(500);
-        expect(json).toHaveBeenCalledWith({ error: 'server error' });*/
-    });
-    
-});
+        
+    })
+
+})

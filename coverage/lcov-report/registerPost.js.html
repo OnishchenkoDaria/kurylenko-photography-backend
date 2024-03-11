@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.94% </span>
+                <span class="strong">67.64% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/34</span>
+                <span class='fraction'>23/34</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/10</span>
+                <span class='fraction'>6/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.94% </span>
+                <span class="strong">67.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/34</span>
+                <span class='fraction'>23/34</span>
             </div>
         
             
@@ -124,44 +124,48 @@
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,7 +194,7 @@ const {db} = require('./db')
 const credentials = require('./credentials')
 const AdminEmail = credentials.email
 &nbsp;
-function RegisterNewUser( req, res){
+async function RegisterNewUser( req, res){
     if(req.session.user){
         console.log('an active session is going')
         return res.status(409).json({ error: 'an active session exist' });
@@ -208,21 +212,23 @@ function RegisterNewUser( req, res){
             return res.status(500).json({ error: 'server error' });
         }
         // if found =&gt; result of matching search is not zero but email(s)
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (result.length &gt; 0) {
+        if (result.length &gt; 0) {
             return res.status(409).json({ error: 'email in use' });
         }
     
         //handling hashing
     
-<span class="cstat-no" title="statement not covered" >        Hashing(password)</span>
-            .then(<span class="fstat-no" title="function not covered" >(n</span>ewHashedPassword) =&gt; {
-<span class="cstat-no" title="statement not covered" >                console.log(newHashedPassword)</span>
+        Hashing(password)
+            .then((newHashedPassword) =&gt; {
+&nbsp;
+                //перенести все з цього .then у функцію, передавшт нароль newHashedPassword, req, res
+                console.log(newHashedPassword)
                 //initialization of the post object ---&gt; inserting into mysql table with post
-                let post = <span class="cstat-no" title="statement not covered" >{name: name , password: newHashedPassword, email: email}</span>
+                let post = {name: name , password: newHashedPassword, email: email}
                 
                 //mysql syntax for inserting
-                let sql = <span class="cstat-no" title="statement not covered" >'INSERT INTO users SET ?'</span>
-<span class="cstat-no" title="statement not covered" >                db.query(sql,post, <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {</span>
+                let sql = 'INSERT INTO users SET ?'
+                db.query(sql,post, <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
 <span class="cstat-no" title="statement not covered" >                    if(err){</span>
 <span class="cstat-no" title="statement not covered" >                        throw err</span>
                     }
@@ -253,7 +259,7 @@ module.exports = RegisterNewUser</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-10T01:03:32.663Z
+                at 2024-03-11T21:53:25.239Z
             </div>
         <script src="prettify.js"></script>
         <script>

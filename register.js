@@ -109,7 +109,7 @@ registerRouter.get('/get-role', (req, res) => {
     res.json(role)
 })
 
-const LogoutUser = require('./loginPost')
+const LogoutUser = require('./logoutPost')
 //check
 
 registerRouter.post('/log-out', (req, res) => {

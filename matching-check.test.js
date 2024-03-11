@@ -43,7 +43,7 @@ describe('isMatch function', () => {
     })
 
     test('should return login passed message with admin role if passwords match and user is an admin', async () => {
-    bcrypt.compare.mockResolvedValueOnce(true);
+    bcrypt.compare.mockResolvedValueOnce(true)
     //substituding the avarage uder  email in a sample info with the admin email
     const foundAdmin = { ...found, email: AdminEmail }
     await isMatch(FoundPassword, foundAdmin, res, req)
