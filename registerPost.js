@@ -29,8 +29,7 @@ async function RegisterNewUser( req, res){
     
         Hashing(password)
             .then((newHashedPassword) => {
-
-                //перенести все з цього .then у функцію, передавшт нароль newHashedPassword, req, res
+                
                 console.log(newHashedPassword)
                 //initialization of the post object ---> inserting into mysql table with post
                 let post = {name: name , password: newHashedPassword, email: email}
@@ -55,12 +54,13 @@ async function RegisterNewUser( req, res){
                         req.session.role = 'user'
                     }
                                 
-                    res.status(201).json({ message: 'user added' });
+                    return res.status(201).json({ message: 'user added' });
                 })
             })
             .catch((error) => {
+                console.log('fgdfgd')
                 console.error(error);
-                return res.status(500).json({ error: 'server error' });
+                return res.status(500).json({ error: 'hashing error' });
             })
     })
 }

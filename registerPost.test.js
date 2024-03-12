@@ -3,8 +3,8 @@ const { db } = require('./db.js');
 const Hashing = require('./hashing');
 const credentials = require('./credentials');
 
-jest.mock('./hashing', () => jest.fn(() => Promise.resolve('hashedPassword')))
-const { AdminEmail } = credentials;
+jest.mock('./hashing')
+const AdminEmail = credentials.email
 
 describe('RegisterNewUser function', () => {
     let res, req, json, status, query, err, result;
@@ -52,7 +52,7 @@ describe('RegisterNewUser function', () => {
     });
 
     test('should return error if the email was found in db', () => {
-        result = [{ useremail: 'test@getMaxListeners.com' }];
+        result = [{ useremail: 'test@gmail.com' }];
         query.mockImplementation((_, callback) => callback(err, result));
 
         RegisterNewUser(req, res);
@@ -63,12 +63,13 @@ describe('RegisterNewUser function', () => {
 
     
 
-    test('should handle hashing success', async () => {
+    test('should handle hashing success for user', async () => {
         // Mocking successful hashing
         Hashing.mockResolvedValueOnce('hashedPassword');
 
         // Mocking the database query to return no user with the input email
         query.mockImplementationOnce((_, callback) => callback(null, []))
+        //Mocking the database to insert the user data with no error
         query.mockImplementationOnce((_, __, callback) => callback(null, result))
         await RegisterNewUser(req, res)
 
@@ -80,19 +81,62 @@ describe('RegisterNewUser function', () => {
         //        db.query(sql,post, (err))
         //callback is not a function
         //returning undefined
-        const { user, email, role } = req.session;
-        expect(user).toBe('testname');
-        expect(email).toBe('test@gmail.com');
-        expect(role).toBe('user');
+        const { user, email, role } = req.session
+        expect(user).toBe('testname')
+        expect(email).toBe('test@gmail.com')
+        expect(role).toBe('user')
 
-        expect(res.status).toHaveBeenCalledWith(201)
-        expect(res.json).toHaveBeenCalledWith({ message: 'user added' })
+        expect(status).toHaveBeenCalledWith(201)
+        expect(json).toHaveBeenCalledWith({ message: 'user added' })
     })
 
 
     /* handling hashing promise */
-    test('should catch the error during hashing', async() => {
+    test('should handle hashing success for user', async() => {
+        req.body.useremail = AdminEmail
+        Hashing.mockResolvedValueOnce('hashedPassword')
+
+        // Mocking the database query to return no user with the input email
+        query.mockImplementationOnce((_, callback) => callback(null, []))
+        //Mocking the database to insert the user data with no error
+        query.mockImplementationOnce((_, __, callback) => callback(null, result))
+        await RegisterNewUser(req, res)
+
+        expect(Hashing).toHaveBeenCalledWith('testpassword')
+        expect(query).toHaveBeenCalled()
+        expect(db.query).toHaveBeenCalled()
         
+        const { user, email, role } = req.session
+        expect(user).toBe('testname')
+        expect(email).toBe(AdminEmail)
+        expect(role).toBe('admin')
+
+        expect(status).toHaveBeenCalledWith(201)
+        expect(json).toHaveBeenCalledWith({ message: 'user added' })
     })
 
+    test('should return error while executing INSERT query', async() => {
+        err = new Error('db query error');
+        Hashing.mockResolvedValueOnce('hashedPassword')
+
+        // Mocking the database query to return no user with the input email
+        query.mockImplementationOnce((_, callback) => callback(null, []))
+        //Mocking the database to insert the user data with no error
+        query.mockImplementationOnce((_, __, callback) => callback(err, result))
+        await RegisterNewUser(req, res)
+        expect(status).toHaveBeenCalledWith(500)
+        expect(json).toHaveBeenCalledWith({ error: 'server error' })
+    })
+
+    test('should return error of Hashing execution', async() => {
+        const errorMessage = 'Hashing error';
+        const err = new Error(errorMessage);
+        Hashing.mockRejectedValueOnce(err)
+        query.mockImplementationOnce((_, callback) => callback(null, []))
+        
+        await RegisterNewUser(req, res)
+        
+        /*expect(status).toHaveBeenCalledWith(500)
+        expect(json).toHaveBeenCalledWith({ error: 'hashing error' })*/
+    })
 })
