@@ -65,8 +65,6 @@ registerRouter.get('/', (req,res) => {
    res.send('<h1>Works</h1>')
 })
 
-//try to refactor it in further
-
 const RegisterNewUser = require('./registerPost')
 
 registerRouter.post('/add', (req,res) => {
@@ -74,7 +72,6 @@ registerRouter.post('/add', (req,res) => {
     RegisterNewUser(req, res)
 })
 
-const isMatch = require('./matching-check')
 const LoginUser = require('./loginPost')
 
 registerRouter.post('/log-in', (req,res) => {
@@ -113,21 +110,11 @@ const LogoutUser = require('./logoutPost')
 //check
 
 registerRouter.post('/log-out', (req, res) => {
-    if(!req.session.user){
-        return res.status(409).json({ error: 'no active session to be shut' });
-    } else{
-        req.session.destroy((err) => {
-            if (err) {
-            return res.status(500).json({ error: 'Error destroying session' });
-            }
-            //console.log('Logged out');
-            return res.status(200).json({ message: 'session shut' })
-        });
-    }
+    LogoutUser(req, res)
 })
 
 const keys = require('./be-keys')
-const { error } = require('console')
+//const { error } = require('console')
 
 registerRouter.addPayment = (price) => {
     const date = new Date()
