@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for hashing.js</title>
+    <title>Code coverage report for setTimeDate.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> hashing.js</h1>
+        <h1><a href="index.html">All files</a> setTimeDate.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">8.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>1/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">8.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>1/12</span>
             </div>
         
             
@@ -83,50 +83,47 @@
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">const bcrypt = require('bcrypt');
-&nbsp;
-async function <span class="fstat-no" title="function not covered" >Hashing(</span>originalPassword) {
-<span class="cstat-no" title="statement not covered" >    if (typeof originalPassword !== 'string') {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error('Password must be a string')</span>
-    }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >     if (originalPassword.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error('Password cannot be empty')</span>
-    }
-&nbsp;
-    const saltRounds = <span class="cstat-no" title="statement not covered" >10</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    try {</span>
-        const hashedPassword = <span class="cstat-no" title="statement not covered" >await bcrypt.hash(originalPassword, saltRounds)</span>
-<span class="cstat-no" title="statement not covered" >        return hashedPassword</span>
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >        throw err</span>
-    }
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">function <span class="fstat-no" title="function not covered" >setTime(</span>){
+    const date = <span class="cstat-no" title="statement not covered" >new Date()</span>
+    const time = <span class="cstat-no" title="statement not covered" >date.toLocaleTimeString('en-US', {hour12:false})</span>
+<span class="cstat-no" title="statement not covered" >    return time</span>
 }
 &nbsp;
-module.exports = Hashing</pre></td></tr></table></pre>
+function <span class="fstat-no" title="function not covered" >setDate(</span>){
+    const date = <span class="cstat-no" title="statement not covered" >new Date()</span>
+    const day = <span class="cstat-no" title="statement not covered" >date.toLocaleDateString('en-ca', {hour12:false})</span>
+<span class="cstat-no" title="statement not covered" >    return day</span>
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >setTimeDate(</span>time, date) {
+<span class="cstat-no" title="statement not covered" >    time = setTime()</span>
+<span class="cstat-no" title="statement not covered" >    day = setDate()</span>
+    const Today = <span class="cstat-no" title="statement not covered" >day+' '+time</span>
+<span class="cstat-no" title="statement not covered" >    console.log(Today)</span>
+<span class="cstat-no" title="statement not covered" >    return Today</span>
+}
+&nbsp;
+module.exports = {setTime, setDate, setTimeDate}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

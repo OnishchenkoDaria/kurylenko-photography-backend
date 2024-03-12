@@ -113,14 +113,15 @@ registerRouter.post('/log-out', (req, res) => {
     LogoutUser(req, res)
 })
 
-const keys = require('./be-keys')
-//const { error } = require('console')
+const {setTimeDate} = require('./setTimeDate')
+
 
 registerRouter.addPayment = (price) => {
-    const date = new Date()
+    /*const date = new Date()
     const day = date.toLocaleDateString('en-ca', {hour12:false})
     const time = date.toLocaleTimeString('en-US', {hour12:false})
-    const Today = day+' '+time
+    const Today = day+' '+time*/
+    const Today = setTimeDate()
     console.log(Today)
     let post = {price: price, email:user_email, date: Today}
     let sql = `INSERT INTO orders SET ?`

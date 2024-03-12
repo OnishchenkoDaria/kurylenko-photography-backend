@@ -92,7 +92,7 @@ describe('RegisterNewUser function', () => {
 
 
     /* handling hashing promise */
-    test('should handle hashing success for user', async() => {
+    test('should handle hashing successfully for user', async() => {
         req.body.useremail = AdminEmail
         Hashing.mockResolvedValueOnce('hashedPassword')
 
