@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const sessions = require('express-session');
 
-
 //header("Access-Control-Allow-Origin: http://localhost:5173");
 //creating our mysql database + connecting it with node (next function)
 
@@ -89,16 +88,10 @@ registerRouter.get('/user', (req,res)=> {
     res.json(({user , role }) || null)
 })*/
 
+const SessionHookControl = require('./sessionHookPost')
 
 registerRouter.post('/session-hook', (req, res) => {
-    const userName = req.session.user
-    console.log(userName)
-    if(!req.session.user){
-        return res.status(409).json({ error: 'no active session, redirect' })
-    }
-    else{
-        return res.status(200).json(userName)
-    }
+    SessionHookControl(req, res)
 })
 
 registerRouter.get('/get-role', (req, res) => {
@@ -113,47 +106,22 @@ registerRouter.post('/log-out', (req, res) => {
     LogoutUser(req, res)
 })
 
-const {setTimeDate} = require('./setTimeDate')
-
+const AddUserPayment = require('./addUserPaymentPost')
 
 registerRouter.addPayment = (price) => {
-    /*const date = new Date()
-    const day = date.toLocaleDateString('en-ca', {hour12:false})
-    const time = date.toLocaleTimeString('en-US', {hour12:false})
-    const Today = day+' '+time*/
-    const Today = setTimeDate()
-    console.log(Today)
-    let post = {price: price, email:user_email, date: Today}
-    let sql = `INSERT INTO orders SET ?`
-    db.query(sql,post, (err)=>{
-        if (err) {
-            return res.status(500).json({ error: 'server error' });
-        }
-        console.log('payment added!')
-    })
+    AddUserPayment(req, res, user_email, price)
 }
 
+const getUserTable = require('./getTablePost')
 registerRouter.post('/get-table', (req,res)=>{
-    if(!req.session.user){
-        return res.status(409).json({ error: 'no active session' });
-    } else{
-        const email = req.session.email
-        console.log(email)
-        let sql = `SELECT * FROM orders WHERE email ='${email}'`
-        db.query(sql, (err, result)=>{
-            if (err) {
-                return res.status(500).json({ error: 'server error' });
-            }
-            console.log(result)
-            return res.status(200).json(result);
-        })    
-    }
+    getUserTable(req, res)
 })
 
 var user_email=''
 const HashPaymentInfo = require('./PaymentPost')
 
 registerRouter.post('/hashing', (req, res) => {
+    user_email = req.session.email
     HashPaymentInfo(req, res)
 })
 

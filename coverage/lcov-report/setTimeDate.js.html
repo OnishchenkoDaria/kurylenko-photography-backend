@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -84,43 +84,43 @@
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">function <span class="fstat-no" title="function not covered" >setTime(</span>){
-    const date = <span class="cstat-no" title="statement not covered" >new Date()</span>
-    const time = <span class="cstat-no" title="statement not covered" >date.toLocaleTimeString('en-US', {hour12:false})</span>
-<span class="cstat-no" title="statement not covered" >    return time</span>
+<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">function setTime(){
+    const date = new Date()
+    const time = date.toLocaleTimeString('en-US', {hour12:false})
+    return time
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >setDate(</span>){
-    const date = <span class="cstat-no" title="statement not covered" >new Date()</span>
-    const day = <span class="cstat-no" title="statement not covered" >date.toLocaleDateString('en-ca', {hour12:false})</span>
-<span class="cstat-no" title="statement not covered" >    return day</span>
+function setDate(){
+    const date = new Date()
+    const day = date.toLocaleDateString('en-ca', {hour12:false})
+    return day
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >setTimeDate(</span>time, date) {
-<span class="cstat-no" title="statement not covered" >    time = setTime()</span>
-<span class="cstat-no" title="statement not covered" >    day = setDate()</span>
-    const Today = <span class="cstat-no" title="statement not covered" >day+' '+time</span>
-<span class="cstat-no" title="statement not covered" >    console.log(Today)</span>
-<span class="cstat-no" title="statement not covered" >    return Today</span>
+function setTimeDate(time, date) {
+    time = setTime()
+    day = setDate()
+    const Today = day+' '+time
+    console.log(Today)
+    return Today
 }
 &nbsp;
 module.exports = {setTime, setDate, setTimeDate}</pre></td></tr></table></pre>
@@ -130,7 +130,7 @@ module.exports = {setTime, setDate, setTimeDate}</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-12T23:50:56.450Z
+                at 2024-03-13T02:50:50.323Z
             </div>
         <script src="prettify.js"></script>
         <script>

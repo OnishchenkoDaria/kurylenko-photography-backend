@@ -9,7 +9,10 @@ function createUniqueNumber() {
     const [hours, minutes, seconds] = currTime.split(':').map(String)
     const [year, day, month] = currDay.split('-').map(String)
 
-    const UniqueNumber = hours+year+minutes+day+seconds+month+ Math.floor(Math.random() * year)
+    const randomElement = Math.floor(Math.random() * year)
+    console.log(randomElement)
+
+    const UniqueNumber = hours+year+minutes+day+seconds+month+randomElement
     console.log(UniqueNumber)
 
     return UniqueNumber

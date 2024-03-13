@@ -39,7 +39,7 @@ describe('HashPaymentInfo', () => {
     jest.clearAllMocks();
   })
 
-  it('should return error if no active session exist', () => {
+  test('should return error if no active session exist', () => {
     req.session.user = false
 
     HashPaymentInfo(req, res)
@@ -48,7 +48,7 @@ describe('HashPaymentInfo', () => {
     expect(res.json).toHaveBeenCalledWith({ error: 'no active session' })
   })
 
-  it('should execute payment successfully', () => {
+  test('should execute payment successfully', () => {
     HashPaymentInfo(req, res)
 
     expect(res.status).toHaveBeenCalledWith(200)
