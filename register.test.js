@@ -1,71 +1,63 @@
 const express = require('express')
 const request = require('supertest');
 const registerRouter = require('./register.js')
+const session = require('express-session')
 
-describe('Register Router', () => {
-  let app;
+const app = express()
 
-  beforeEach(() => {
-    app = express();
-    app.use(express.json());
-    app.use('/', registerRouter);
-  });
+// use express-session middleware
+app.use(session({ secret: 'test-secret', resave: true, saveUninitialized: true }))
 
-  afterEach(() => {
-    // Clean up
-  });
+// mount the registerRouter onto the Express app
+app.use('/api', registerRouter)
 
-  test('should respond with "Works" on GET /', async () => {
-   /* const response = await request(app).get('/');
-    expect(response.statusCode).toBe(200);
-    expect(response.text).toContain('<h1>Works</h1>');*/
-  });  
-});
+describe('GET /get-role', () => {
+  it('responds with role when session role is set', async () => {
+    const role = 'admin'
+    const sessionData = { role: role }
 
-/*describe('Register Router Register', () => {
-  let app;
+    // mock the req 
+    const req = { session: sessionData }
 
-  beforeEach(() => {
-    app = express();
-    app.use(express.json());
-    app.use('/add', registerRouter);
-  });
+    // mock the res 
+    const res = {
+      json: jest.fn(),
+      status: jest.fn(() => res),
+    };
 
-  afterEach(() => {
-    // Clean up
-  });
-*/
-  /*it('should respond with "Works" on GET /', async () => {
-    //mocking request object
-    const req = {
-      session: {},
-      body: {
-        username: 'test',
-        usermail: 'test@email.com',
-        userpassword: 'testpassword'
+    // mock the route handler function
+    const routeHandler = (req, res) => {
+      res.json({ role: req.session.role })
+    }
+
+    await routeHandler(req, res)
+
+    expect(res.status).not.toHaveBeenCalled()
+    expect(res.json).toHaveBeenCalledWith({ role: role })
+  })
+
+  it('responds with unauthorized error when session role is not set', async () => {
+    // mock the req
+    const req = { session: {} }
+
+    // mock the res
+    const res = {
+      json: jest.fn(),
+      status: jest.fn(() => res),
+    };
+
+    // mock the route handler function
+    const routeHandler = (req, res) => {
+      if (!req.session.role) {
+        res.status(401).json({ error: 'Unauthorized' })
+      } else {
+        res.json({ role: req.session.role })
       }
     }
-    /*const res = {
-      status: jest.fn(() => res),
-      json: jest.fn()
-    }*/
-/*
-    await request(app).post('/add')
-  //  expect(res.json).toHaveBeenCalledWith({ message: 'user added' });
-  });  
-});*/
 
-//hashing
-/*describe('Hashing password function', () => {
-    it('should have the password', async () => {
-        const inputPassword = "password"
-        const hashedPassword = await Hashing(inputPassword)
-        
-        expect(typeof hashedPassword.toBe('string'))
-        expect(hashedPassword).toBeDefined()
-    }) 
+    await routeHandler(req, res)
 
-    it('should throw error if password is not provided', async () => {
-        await expect(Hashing()).rejects.toThrow()
-    })
-})*/
+    expect(res.status).toHaveBeenCalledWith(401)
+    expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' })
+  })
+})

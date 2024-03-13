@@ -96,7 +96,11 @@ registerRouter.post('/session-hook', (req, res) => {
 
 registerRouter.get('/get-role', (req, res) => {
     const role = req.session.role
-    res.json(role)
+    if (role) {
+        res.json({ role: role }); // Send the role in the response body
+    } else {
+        res.status(409).json({ error: 'Unauthorized' }); // Handle case where role is not set
+    }
 })
 
 const LogoutUser = require('./logoutPost')
