@@ -10,6 +10,7 @@ describe('RegisterNewUser function', () => {
     let res, req, json, status, query, err, result;
 
     beforeEach(() => {
+        console.log('before each')
         req = {
             session: {},
             body: {
@@ -33,7 +34,7 @@ describe('RegisterNewUser function', () => {
         jest.clearAllMocks();
     });
 
-    test('should return error if the active session exists', () => {
+    test('should return error if the active session exists', async() => {
         req.session.user = true;
         RegisterNewUser(req, res);
 
@@ -41,6 +42,7 @@ describe('RegisterNewUser function', () => {
         expect(json).toHaveBeenCalledWith({ error: 'an active session exist' });
     });
 
+    //problem 1
     test('should return error of failed query operation', () => {
         err = new Error('db query error');
         query.mockImplementation((_, callback) => callback(err, result));
@@ -51,6 +53,7 @@ describe('RegisterNewUser function', () => {
         expect(json).toHaveBeenCalledWith({ error: 'server error' });
     });
 
+    //problem 2
     test('should return error if the email was found in db', () => {
         result = [{ useremail: 'test@gmail.com' }];
         query.mockImplementation((_, callback) => callback(err, result));
@@ -129,6 +132,7 @@ describe('RegisterNewUser function', () => {
     })
 
     test('should return error of Hashing execution', async() => {
+
         const errorMessage = 'Hashing error';
         const err = new Error(errorMessage);
         Hashing.mockRejectedValueOnce(err)
@@ -136,7 +140,8 @@ describe('RegisterNewUser function', () => {
         
         await RegisterNewUser(req, res)
         
-        /*expect(status).toHaveBeenCalledWith(500)
-        expect(json).toHaveBeenCalledWith({ error: 'hashing error' })*/
+        expect(status).toHaveBeenCalledWith(500)
+        expect(json).toHaveBeenCalledWith({ error: 'hashing error' })
     })
+
 })

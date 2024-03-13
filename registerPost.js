@@ -24,45 +24,46 @@ async function RegisterNewUser( req, res){
         if (result.length > 0) {
             return res.status(409).json({ error: 'email in use' });
         }
-    
-        //handling hashing
-    
-        Hashing(password)
-            .then((newHashedPassword) => {
-                
-                console.log(newHashedPassword)
-                //initialization of the post object ---> inserting into mysql table with post
-                let post = {name: name , password: newHashedPassword, email: email}
-                console.log('orig: '  + name, email, password)
-                console.log('after hash: ' + post.name, post.email, post.password)
-                //mysql syntax for inserting
-                let sql = 'INSERT INTO users SET ?'
-                db.query(sql,post, (err) => {
-                    console.log('passed')
-                    if(err){
-                        console.error(err);
-                        return res.status(500).json({ error: 'server error' });
-                    }
-                    //success case
-                    console.log('user added!')
-                    req.session.user = post.name
-                    req.session.email = post.email
-                    console.log('session: ' + req.session.user , req.session.email)
-                    if(post.email === AdminEmail){
-                        req.session.role = 'admin'
-                    } else {
-                        req.session.role = 'user'
-                    }
-                                
-                    return res.status(201).json({ message: 'user added' });
-                })
-            })
-            .catch((error) => {
-                console.log('fgdfgd')
-                console.error(error);
-                return res.status(500).json({ error: 'hashing error' });
-            })
     })
+    //handling hashing
+    
+    //added await and moved ahshing to the function mani body
+    await Hashing(password)
+        .then((newHashedPassword) => {
+                
+            console.log(newHashedPassword)
+            //initialization of the post object ---> inserting into mysql table with post
+            let post = {name: name , password: newHashedPassword, email: email}
+            console.log('orig: '  + name, email, password)
+            console.log('after hash: ' + post.name, post.email, post.password)
+            //mysql syntax for inserting
+            let sql = 'INSERT INTO users SET ?'
+            db.query(sql,post, (err) => {
+                console.log('passed')
+                if(err){
+                    console.error(err);
+                    return res.status(500).json({ error: 'server error' });
+                }
+                //success case
+                console.log('user added!')
+                req.session.user = post.name
+                req.session.email = post.email
+                console.log('session: ' + req.session.user , req.session.email)
+                if(post.email === AdminEmail){
+                    req.session.role = 'admin'
+                } else {
+                    req.session.role = 'user'
+                }
+                                
+                return res.status(201).json({ message: 'user added' });
+            })
+        })
+        .catch((error) => {
+            console.log('catch block')
+            console.error(error)
+            return res.status(500).json({ error: 'hashing error' });
+        })
+    
 }
 
 module.exports = RegisterNewUser
