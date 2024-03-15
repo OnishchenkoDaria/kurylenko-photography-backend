@@ -89,7 +89,6 @@ postsRouter.post('/', upload.single('image'), (request, response) => {
 
 postsRouter.patch('/:id', upload.none(), (request, response) => {
     const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-    const update = [request.body.title, request.body.content, request.params.id]
     console.log(update)
     db.query(query, update, (err, result) => {
         if (err) {

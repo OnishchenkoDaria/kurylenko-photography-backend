@@ -3,7 +3,7 @@ const {db} = require('./db')
 const credentials = require('./credentials')
 const AdminEmail = credentials.email
 
-async function RegisterNewUser( req, res){
+async function RegisterNewUser(req, res){
     if(req.session.user){
         console.log('an active session is going')
         return res.status(409).json({ error: 'an active session exist' });
@@ -16,15 +16,23 @@ async function RegisterNewUser( req, res){
 
     // mysql syntax meaning : finding a matching email in the table with the recieved email
     const checkEmailQuery = `SELECT * FROM users WHERE email = '${email}'`;
-    db.query(checkEmailQuery, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'server error' });
-        }
-        // if found => result of matching search is not zero but email(s)
-        if (result.length > 0) {
-            return res.status(409).json({ error: 'email in use' });
-        }
+    const result = await new Promise((resolve, reject) => {
+        db.query(checkEmailQuery, (err, result) => {
+            if (err) {
+               // reject(err)
+                return res.status(500).json({ error: 'server error'})
+            }
+            // if found => result of matching search is not zero but email(s)
+            resolve(result)
+        })
     })
+    console.log(result)
+    
+    if (result.length > 0) {
+        console.log('lenth check')
+        return res.status(409).json({ error: 'email in use' })
+    }
+    console.log('after length check')
     //handling hashing
     
     //added await and moved ahshing to the function mani body

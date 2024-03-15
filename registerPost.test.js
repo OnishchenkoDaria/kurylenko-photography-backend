@@ -45,7 +45,7 @@ describe('RegisterNewUser function', () => {
     //problem 1
     test('should return error of failed query operation', () => {
         err = new Error('db query error');
-        query.mockImplementation((_, callback) => callback(err, result));
+        query.mockImplementation((_, callback) => callback(err, null));
 
         RegisterNewUser(req, res);
 
@@ -54,11 +54,11 @@ describe('RegisterNewUser function', () => {
     });
 
     //problem 2
-    test('should return error if the email was found in db', () => {
+    test('should return error if the email was found in db', async() => {
         result = [{ useremail: 'test@gmail.com' }];
-        query.mockImplementation((_, callback) => callback(err, result));
+        query.mockImplementation((_, callback) => callback(null, result));
 
-        RegisterNewUser(req, res);
+        await RegisterNewUser(req, res);
 
         expect(status).toHaveBeenCalledWith(409);
         expect(json).toHaveBeenCalledWith({ error: 'email in use' });
@@ -94,8 +94,8 @@ describe('RegisterNewUser function', () => {
     })
 
 
-    /* handling hashing promise */
-    test('should handle hashing successfully for user', async() => {
+    
+    test('should handle hashing successfully for admin', async() => {
         req.body.useremail = AdminEmail
         Hashing.mockResolvedValueOnce('hashedPassword')
 
@@ -143,5 +143,4 @@ describe('RegisterNewUser function', () => {
         expect(status).toHaveBeenCalledWith(500)
         expect(json).toHaveBeenCalledWith({ error: 'hashing error' })
     })
-
 })
