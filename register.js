@@ -16,13 +16,7 @@ createUserTable(db);
 //orders table creation
 createOrdersTable(db);
 
-
-//adding admain user by default with data from unttracked credentails
-const credentials = require('./credentials')
-
-//const AdminUsername = credentials.username
-//const AdminPassword = credentials.password
-const AdminEmail = credentials.email
+//credentials data is no longer used in router (used locally in functions)
 
 insertAdminByDefault(db);
 
@@ -36,19 +30,17 @@ const corsOptions = {
 };
 registerRouter.use(cors(corsOptions));
 
-//session implementation || future data hash
+//session implementation
 const crypto = require('crypto');
 
 const generateSecretKey = () => {
   return crypto.randomBytes(64).toString('hex');
 };
 
-//console.log(generateSecretKey());
-
 registerRouter.use(
     sessions({
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 //for 24 hours
+            maxAge: 1000 * 60 * 60 * 24 //sets cookie for 24 hours
         },
         secret:generateSecretKey(),
         resave: true,
@@ -60,40 +52,29 @@ registerRouter.use(express.urlencoded({ extended: true }));
 
 registerRouter.use(bodyParser.json());
 
-registerRouter.get('/', (req,res) => {
-   res.send('<h1>Works</h1>')
-})
-
+//handling user regestration
 const RegisterNewUser = require('./registerPost')
 
 registerRouter.post('/add', (req,res) => {
-    //function
     RegisterNewUser(req, res)
 })
 
+//handling user log in
 const LoginUser = require('./loginPost')
 
 registerRouter.post('/log-in', (req,res) => {
     LoginUser(req, res)
 })
 
-/*
-was used at development for checking session functionality
-
-registerRouter.get('/user', (req,res)=> {
-    const user = req.session.user
-    const role = req.session.role 
-    console.log("user: " , user)
-    console.log("role: " , role)
-    res.json(({user , role }) || null)
-})*/
-
+//handles the session check
 const SessionHookControl = require('./sessionHookPost')
 
 registerRouter.post('/session-hook', (req, res) => {
     SessionHookControl(req, res)
 })
 
+//to tiny to do it outer - remains in router
+//handles the role check --- for posts
 registerRouter.get('/get-role', (req, res) => {
     const role = req.session.role
     if (role) {
@@ -103,24 +84,28 @@ registerRouter.get('/get-role', (req, res) => {
     }
 })
 
+//handles user log out
 const LogoutUser = require('./logoutPost')
-//check
 
 registerRouter.post('/log-out', (req, res) => {
     LogoutUser(req, res)
 })
 
+//handles recording user successsful payment in database orders table
 const AddUserPayment = require('./addUserPaymentPost')
 
 registerRouter.addPayment = (price) => {
     AddUserPayment(req, res, user_email, price)
 }
 
+//handles active users all payments table data print
 const getUserTable = require('./getTablePost')
+
 registerRouter.post('/get-table', (req,res)=>{
     getUserTable(req, res)
 })
 
+//handles hashing the payment information and transfering it to liq pay
 var user_email=''
 const HashPaymentInfo = require('./PaymentPost')
 
