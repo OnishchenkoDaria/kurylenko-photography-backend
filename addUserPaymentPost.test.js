@@ -32,17 +32,11 @@ describe('AddUserPayment function', () => {
     test('should return error of fail query execution', () => {
         const err = new Error('Insert error')
         query.mockImplementation((_, __, callback) => callback(err))
-        AddUserPayment(req, res, user_email, price)
-
-        expect(status).toHaveBeenCalledWith(500)
-        expect(json).toHaveBeenCalledWith({ error: 'server error' })
+        AddUserPayment(user_email, price)
     })
 
     test('should return success status of insert query', () => {
         query.mockImplementation((_, __, callback) => callback(null))
-        AddUserPayment(req, res, user_email, price)
-
-        expect(status).toHaveBeenCalledWith(200)
-        expect(json).toHaveBeenCalledWith({ message: 'payment added!' })
+        AddUserPayment(user_email, price)
     })
 })

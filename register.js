@@ -95,7 +95,7 @@ registerRouter.post('/log-out', (req, res) => {
 const AddUserPayment = require('./addUserPaymentPost')
 
 registerRouter.addPayment = (price) => {
-    AddUserPayment(req, res, user_email, price)
+    AddUserPayment(user_email, price)
 }
 
 //handles active users all payments table data print
