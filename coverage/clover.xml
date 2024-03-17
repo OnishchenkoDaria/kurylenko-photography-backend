@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1710626398471" clover="3.2.0">
-  <project timestamp="1710626398471" name="All files">
-    <metrics statements="48" coveredstatements="19" conditionals="14" coveredconditionals="2" methods="12" coveredmethods="2" elements="74" coveredelements="23" complexity="0" loc="48" ncloc="48" packages="1" files="2" classes="2"/>
-    <file name="addUserPaymentPost.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\addUserPaymentPost.js">
-      <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+<coverage generated="1710628312135" clover="3.2.0">
+  <project timestamp="1710628312135" name="All files">
+    <metrics statements="38" coveredstatements="23" conditionals="12" coveredconditionals="6" methods="10" coveredmethods="4" elements="60" coveredelements="33" complexity="0" loc="38" ncloc="38" packages="1" files="2" classes="2"/>
+    <file name="credentials.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\credentials.js">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="5" count="2" type="stmt"/>
-      <line num="6" count="2" type="stmt"/>
-      <line num="7" count="2" type="stmt"/>
-      <line num="8" count="2" type="stmt"/>
-      <line num="9" count="2" type="stmt"/>
-      <line num="10" count="2" type="cond" truecount="2" falsecount="0"/>
-      <line num="11" count="1" type="stmt"/>
-      <line num="13" count="2" type="stmt"/>
-      <line num="17" count="1" type="stmt"/>
     </file>
     <file name="db.js" path="C:\Users\User\Desktop\project-frontend\project-frontend\backend\db.js">
-      <metrics statements="37" coveredstatements="8" conditionals="12" coveredconditionals="0" methods="10" coveredmethods="0"/>
+      <metrics statements="37" coveredstatements="22" conditionals="12" coveredconditionals="6" methods="10" coveredmethods="4"/>
       <line num="1" count="1" type="stmt"/>
       <line num="2" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
@@ -40,20 +30,20 @@
       <line num="39" count="0" type="cond" truecount="0" falsecount="2"/>
       <line num="40" count="0" type="stmt"/>
       <line num="42" count="0" type="stmt"/>
-      <line num="47" count="0" type="stmt"/>
-      <line num="48" count="0" type="stmt"/>
-      <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="50" count="0" type="stmt"/>
-      <line num="52" count="0" type="stmt"/>
-      <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="54" count="0" type="stmt"/>
-      <line num="56" count="0" type="stmt"/>
-      <line num="57" count="0" type="stmt"/>
-      <line num="58" count="0" type="stmt"/>
-      <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="60" count="0" type="stmt"/>
-      <line num="62" count="0" type="stmt"/>
-      <line num="68" count="0" type="stmt"/>
+      <line num="47" count="4" type="stmt"/>
+      <line num="48" count="4" type="stmt"/>
+      <line num="49" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="50" count="1" type="stmt"/>
+      <line num="52" count="3" type="stmt"/>
+      <line num="53" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="54" count="2" type="stmt"/>
+      <line num="56" count="2" type="stmt"/>
+      <line num="57" count="2" type="stmt"/>
+      <line num="58" count="2" type="stmt"/>
+      <line num="59" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="60" count="1" type="stmt"/>
+      <line num="62" count="1" type="stmt"/>
+      <line num="68" count="1" type="stmt"/>
       <line num="74" count="1" type="stmt"/>
     </file>
   </project>
