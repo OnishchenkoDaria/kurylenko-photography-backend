@@ -35,17 +35,17 @@ async function RegisterNewUser(req, res){
     console.log('after length check')
     //handling hashing
     
-    //added await and moved ahshing to the function mani body
+    //added await and moved hashing to the function mani body
     await Hashing(password)
         .then((newHashedPassword) => {
                 
             console.log(newHashedPassword)
             //initialization of the post object ---> inserting into mysql table with post
-            let post = {name: name , password: newHashedPassword, email: email}
+            const post = {name: name , password: newHashedPassword, email: email}
             console.log('orig: '  + name, email, password)
             console.log('after hash: ' + post.name, post.email, post.password)
             //mysql syntax for inserting
-            let sql = 'INSERT INTO users SET ?'
+            const sql = 'INSERT INTO users SET ?'
             db.query(sql,post, (err) => {
                 console.log('passed')
                 if(err){
