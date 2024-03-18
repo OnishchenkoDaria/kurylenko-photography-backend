@@ -6,8 +6,7 @@ function LogoutUser(req, res){
             if (err) {
             return res.status(500).json({ error: 'Error destroying session' });
             }
-            //console.log('Logged out');
-            return res.status(200).json({ message: 'session shut' })
+            return res.status(200).json({ message: 'session shut' });
         });
     }
 }

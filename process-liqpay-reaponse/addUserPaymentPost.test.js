@@ -1,7 +1,7 @@
 const AddUserPayment = require('./addUserPaymentPost')
-const {db} = require('./db')
+const {db} = require('../database/db')
 
-jest.mock('./setTimeDate', () => ({
+jest.mock('../set-time/setTimeDate', () => ({
     setTimeDate: jest.fn().mockReturnValue('2024-03-12 22:39:20')
 }))
 

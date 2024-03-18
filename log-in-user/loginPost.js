@@ -1,14 +1,14 @@
-const isMatch = require('./matching-check')
-const {db} = require('./db')
+const isMatch = require('./matching-check');
+const {db} = require('../database/db');
 
 function LoginUser(req, res){
     if(req.session.user){
-        console.log('an active session is going')
+        console.log('an active session is going');
         return res.status(409).json({ error: 'an active session exist' });
     }
-    console.log('login enter success')
-    const email = req.body.useremail
-    const password = req.body.userpassword
+    console.log('login enter success');
+    const email = req.body.useremail;
+    const password = req.body.userpassword;
 
     const checkEmailQuery = `SELECT * FROM users WHERE email = '${email}'`;
     db.query(checkEmailQuery, (err, result) => {
@@ -20,12 +20,12 @@ function LoginUser(req, res){
             return res.status(409).json({ error: 'email not found' });
         }
         //converting data propely into json format
-        var string=JSON.stringify(result);
-        var json =  JSON.parse(string)
-        console.log(json)
-        // const found = json[0].password
-        console.log("1: ", password , "2: " , json[0].password,) 
-        isMatch(password, json[0], res, req)
+        const string = JSON.stringify(result);
+        const json =  JSON.parse(string);
+        console.log(json);
+
+        console.log("1: ", password , "2: " , json[0].password);
+        isMatch(password, json[0], res, req);
     })
 }
 
