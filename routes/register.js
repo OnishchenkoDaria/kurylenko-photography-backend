@@ -99,13 +99,30 @@ registerRouter.post('/session-hook', (req, res) => {
  * /users/get-role:
  *  get:
  *      tags: [getRole]
- *      parameters:
- *          - name: role
- *            default: user
- *            schema:
- *              type: String
- *      
- *      
+ *      description: return the role of the user from the session
+ *      responses:
+ *          200:
+ *              description: Active role exists
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              role:
+ *                                  type: string
+ *                                  default: user
+ *                                  description: The role of the user
+ *          409:
+ *              description: No active session exist (Unauthorized)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              error:
+ *                                  type: string
+ *                                  default: Unauthorized
+ *                                  description: Error text                      
  */
 
 //to tiny to do it outer - remains in router
