@@ -1,21 +1,58 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+const basicAuth = require('express-basic-auth');
 
-const cors = require('cors')
+const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
   }));
 
-const postRouter = require('./posts.js')
-const registerRouter = require('./register.js')
-app.use('/api/posts', postRouter)
-app.use('/users', registerRouter)
-app.use(express.urlencoded({ extended: true }))
+const postRouter = require('./routes/posts.js');
+const registerRouter = require('./routes/register.js');
 
-const keys = require('./be-keys')
-const private_key = keys.private
-const crypto = require('crypto')
+app.use('/api/posts', postRouter);
+app.use('/users', registerRouter);
+app.use(express.urlencoded({ extended: true }));
+
+const options = {
+    swaggerDefinition: {
+        openapi: "3.0.1",
+        info: {
+          title: "KURYLENKO PHOTOS",
+          version: "1.0.0",
+        },
+        servers: [
+          {
+            url: "http://localhost:3001",
+          },
+        ],
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: "http",
+              scheme: "bearer",
+              bearerFormat: "JWT",
+            },
+          },
+        },
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+      },
+      apis: ["./routes/*.js"],
+    };
+    
+const swaggerSpecs = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
+
+const keys = require('./be-keys');
+const private_key = keys.private;
+const crypto = require('crypto');
 
 app.post('/', (req,res)=> {   
     const Recieved = req.body

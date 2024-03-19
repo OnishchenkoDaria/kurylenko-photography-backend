@@ -56,6 +56,23 @@ registerRouter.use(bodyParser.json());
 //handling user regestration
 const RegisterNewUser = require('../register-user/registerPost');
 
+/**
+ * @swagger
+ * tags:
+ *  name: Registration
+ *  description: This is for user registrstion and inserting its username, email & password (hashed) into database
+ * /users/add:
+ *   post:
+ *      tags: [Registration]
+ *      parameters:
+ *          - name: name
+ *            default: testuser
+ *          - name: email
+ *            default: test@email.com
+ *          - name: password
+ *            default: testpassword
+ *      
+ */
 registerRouter.post('/add', (req,res) => {
     RegisterNewUser(req, res);
 });
@@ -73,6 +90,23 @@ const SessionHookControl = require('../session-hook/sessionHookPost')
 registerRouter.post('/session-hook', (req, res) => {
     SessionHookControl(req, res);
 });
+
+/**
+ * @swagger
+ * tags:
+ *  name: getRole
+ *  description: This is for the main data
+ * /users/get-role:
+ *  get:
+ *      tags: [getRole]
+ *      parameters:
+ *          - name: role
+ *            default: user
+ *            schema:
+ *              type: String
+ *      
+ *      
+ */
 
 //to tiny to do it outer - remains in router
 //handles the role check --- for posts
