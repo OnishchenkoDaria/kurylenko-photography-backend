@@ -16,6 +16,7 @@ const registerRouter = require('./routes/register.js');
 app.use('/api/posts', postRouter);
 app.use('/users', registerRouter);
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
 const options = {
     swaggerDefinition: {
