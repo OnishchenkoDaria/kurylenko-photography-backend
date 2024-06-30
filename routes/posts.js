@@ -3,34 +3,10 @@ const multer = require('multer')
 const mysql = require('mysql')
 const cors = require('cors')
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'users'
-})
+const {pool, createPostsTable} = require('../database/db');
 
-db.connect(err => {
-    if(err) {
-        throw err
-    }
-    console.log('MySQL Connected')
-
-    let createTable = `CREATE TABLE IF NOT EXISTS posts (
-        id INT NOT NULL AUTO_INCREMENT,
-        title VARCHAR(50) NOT NULL,
-        content VARCHAR(1000) NOT NULL,
-        date DATE NOT NULL,
-        likes INT NOT NULL DEFAULT 0,
-        views INT NOT NULL DEFAULT 0,
-        imageURL VARCHAR(255) NULL DEFAULT NULL,
-        PRIMARY KEY (id));;`
-    db.query(createTable, err => {
-        if (err) throw err
-    })
-})
-
-
+//posts table cration
+createPostsTable(pool);
 
 const postsRouter = express.Router()
 
@@ -40,7 +16,7 @@ postsRouter.use (cors({
     credentials: true,  // enable passing cookies, authorization headers, etc.
 }))
 
-postsRouter.get('/', (requset, response) => {
+postsRouter.get('/', (request, response) => {
     const query = `SELECT * FROM posts ORDER BY id DESC`
     db.query(query, (err, result) => {
         if (err) {

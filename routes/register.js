@@ -6,22 +6,21 @@ const sessions = require('express-session');
 //header("Access-Control-Allow-Origin: http://localhost:5173");
 //creating our mysql database + connecting it with node (next function)
 
-const {db, connectDB, createUserTable, createOrdersTable, insertAdminByDefault} = require('../database/db');
+const {pool, createUserTable, createOrdersTable, insertAdminByDefault} = require('../database/db');
 
-connectDB(db);
 
 //users table creation
-createUserTable(db);
+createUserTable(pool);
 
 //orders table creation
-createOrdersTable(db);
+createOrdersTable(pool);
 
 //credentials data is no longer used in router (used locally in functions)
-
-insertAdminByDefault(db);
+insertAdminByDefault(pool);
 
 const registerRouter = express.Router();
 
+//add it to the database or just as outer one (in general app.js or smth)
 const corsOptions = {
     origin: 'http://localhost:5173',
     credentials: true,  // enable passing cookies, authorization headers, etc.
@@ -215,6 +214,7 @@ registerRouter.get('/get-role', (req, res) => {
 
 //handles user log out
 const LogoutUser = require('../log-out-user/logoutPost');
+
 /**
  * @swagger
  * tags:
@@ -251,6 +251,7 @@ registerRouter.post('/log-out', (req, res) => {
 
 //handles recording user successsful payment in database orders table
 const AddUserPayment = require('../process-liqpay-reaponse/addUserPaymentPost');
+
 /**
  * @swagger
  * tags:
@@ -285,6 +286,7 @@ registerRouter.addPayment = (price) => {
 
 //handles active users all payments table data print
 const getUserTable = require('../users-payments-table/getTablePost');
+
 /**
  * @swagger
  * tags:
@@ -328,6 +330,7 @@ registerRouter.post('/get-table', (req,res)=>{
 //handles hashing the payment information and transfering it to liq pay
 var user_email='';
 const HashPaymentInfo = require('../forming-payment-request/PaymentPost');
+
 /**
  * @swagger
  * tags:
@@ -349,7 +352,7 @@ const HashPaymentInfo = require('../forming-payment-request/PaymentPost');
  *                 default: test@email.com
  *               value:
  *                 type: number
- *                 default: 2
+ *                 default: 
  *     responses:
  *       200:
  *         description: Payment information hashed successfully.
@@ -367,6 +370,7 @@ const HashPaymentInfo = require('../forming-payment-request/PaymentPost');
  *       409:
  *         description: No active session.
  */
+
 registerRouter.post('/hashing', (req, res) => {
     user_email = req.session.email;
     HashPaymentInfo(req, res);

@@ -6,36 +6,57 @@ const AdminUsername = credentials.username;
 const AdminPassword = credentials.password;
 const AdminEmail = credentials.email;
 
-const db = mysql.createConnection({
+var pool =  mysql.createPool({
+    connectionLimit: 10,
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'users'
 });
 
-function connectDB(db) {
-    db.connect(err => {
-        if (err) {
-            console.error('MySQL Connection Error:', err);
-            throw err;
-        }
-        console.log('MySQL Connected');
-    });
-}
+function createUserTable(pool) {
+    
+    const table = `
+        CREATE TABLE IF NOT EXISTS users (
+            id int AUTO_INCREMENT, 
+            name VARCHAR (255), 
+            password VARCHAR (255), 
+            email VARCHAR (255), 
+            PRIMARY KEY(id)
+        )`;
 
-function createUserTable(db) {
-    const table = 'CREATE TABLE IF NOT EXISTS users (id int AUTO_INCREMENT, name VARCHAR (255), password VARCHAR (255), email VARCHAR (255), PRIMARY KEY(id))';
-    db.query(table, err => {
+    pool.query(table, (err) => {
         if(err){
-        throw err;
+            console.error('Error creating thr UserTable: ');
+            throw err;
         }
         console.log('users table created');
     });
 }
 
-function createOrdersTable(db) {
+function createPostsTable(pool){
+
+    const table = `CREATE TABLE IF NOT EXISTS posts (
+        id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(50) NOT NULL,
+        content VARCHAR(1000) NOT NULL,
+        date DATE NOT NULL,
+        likes INT NOT NULL DEFAULT 0,
+        views INT NOT NULL DEFAULT 0,
+        imageURL VARCHAR(255) NULL DEFAULT NULL,
+        PRIMARY KEY (id));`
+
+    pool.query(table, err => {
+        if (err) {
+            throw err;
+        }
+        console.log('posts table created');
+    })
+}
+
+function createOrdersTable(pool) {
     const orders = 'CREATE TABLE IF NOT EXISTS orders (id int AUTO_INCREMENT, price VARCHAR (255), email VARCHAR (255), date VARCHAR (255), PRIMARY KEY(id))';
-    db.query(orders, err => {
+    pool.query(orders, err => {
         if(err){
         throw err;
         }
@@ -43,9 +64,9 @@ function createOrdersTable(db) {
     });
 }
 
-function insertAdminByDefault(db) {
+function insertAdminByDefault(pool) {
     const checkEmpty = `SELECT COUNT(*) AS count FROM users`;
-    db.query(checkEmpty, (queryErr, results)=> {
+    pool.query(checkEmpty, (queryErr, results)=> {
         if(queryErr){
             console.error('Error executing query ', queryErr);
         } else{
@@ -55,7 +76,7 @@ function insertAdminByDefault(db) {
                 .then((newHashed) => {
                     const insertAdmin = 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)';
                     const values = [AdminUsername, newHashed, AdminEmail];
-                    db.query(insertAdmin, values, (insertErr)=> {
+                    pool.query(insertAdmin, values, (insertErr)=> {
                         if (insertErr) {
                             console.error('Error inserting user:', insertErr);
                         } else {
@@ -71,4 +92,4 @@ function insertAdminByDefault(db) {
     });
 }
 
-module.exports = {db, connectDB, createUserTable, createOrdersTable, insertAdminByDefault};
+module.exports = {pool, createUserTable, createPostsTable, createOrdersTable, insertAdminByDefault};
