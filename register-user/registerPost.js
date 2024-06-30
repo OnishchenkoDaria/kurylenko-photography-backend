@@ -1,5 +1,5 @@
 const Hashing = require('../hashing-data/hashing');
-const {db} = require('../database/db');
+const {pool} = require('../database/db');
 const credentials = require('../credentials');
 const AdminEmail = credentials.email;
 
@@ -17,7 +17,7 @@ async function RegisterNewUser(req, res){
     // mysql syntax meaning : finding a matching email in the table with the recieved email
     const checkEmailQuery = `SELECT * FROM users WHERE email = '${email}'`;
     const result = await new Promise((resolve) => {
-        db.query(checkEmailQuery, (err, result) => {
+        pool.query(checkEmailQuery, (err, result) => {
             if (err) {
                 return res.status(500).json({ error: 'server error'});
             }
@@ -47,7 +47,7 @@ async function RegisterNewUser(req, res){
            
             //mysql syntax for inserting
             const sql = 'INSERT INTO users SET ?';
-            db.query(sql,post, (err) => {
+            pool.query(sql,post, (err) => {
                 console.log('passed');
                 if(err){
                     console.error(err);

@@ -18,7 +18,7 @@ postsRouter.use (cors({
 
 postsRouter.get('/', (request, response) => {
     const query = `SELECT * FROM posts ORDER BY id DESC`
-    db.query(query, (err, result) => {
+    pool.query(query, (err, result) => {
         if (err) {
             response.status(500).send(`Can't get this post`)
             console.error('Error in GET:', err)
@@ -29,7 +29,7 @@ postsRouter.get('/', (request, response) => {
 
 postsRouter.get('/:id', (request, response) => {
     const query = `SELECT * FROM posts WHERE id =${request.params.id}`
-    db.query(query, (err, result) => {
+    pool.query(query, (err, result) => {
         if (err) {
             response.status(500).send(`Can't get this post`)
             console.error('Error in GET:', err)
@@ -54,7 +54,7 @@ postsRouter.post('/', upload.single('image'), (request, response) => {
     const imageURL = '../../public/' +request.file.filename
     const post = {title, content, date, imageURL}
     query = `INSERT INTO posts SET ?`
-    db.query(query, post, (err, result) => {
+    pool.query(query, post, (err, result) => {
         if (err) {
             response.status(500).send(`Post wasn't sent.`)
             console.error('Error in POST:', err)
@@ -67,7 +67,7 @@ postsRouter.patch('/:id', upload.none(), (request, response) => {
     const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
     const update = [request.body.title, request.body.content, request.params.id]
     console.log(update)
-    db.query(query, update, (err, result) => {
+    pool.query(query, update, (err, result) => {
         if (err) {
             response.status(500).send(`Update wasn't applied.`)
             console.error('Error in PATCH:', err)
@@ -78,7 +78,7 @@ postsRouter.patch('/:id', upload.none(), (request, response) => {
 
 postsRouter.delete('/:id', (request, response) => {
     const query = `DELETE FROM posts WHERE id = ${request.params.id}`
-    db.query(query, (err, result) => {
+    pool.query(query, (err, result) => {
         if (err) {
             response.status(500).send(`Post wasn't deleted`)
             console.error('Error in DELETE:', err)

@@ -1,4 +1,4 @@
-const {db} = require('../database/db');
+const {pool} = require('../database/db');
 
 function getUserTable(req, res) {
     if(!req.session.user){
@@ -7,7 +7,7 @@ function getUserTable(req, res) {
         const email = req.session.email;
         console.log(email);
         let sql = `SELECT * FROM orders WHERE email ='${email}'`;
-        db.query(sql, (err, result)=>{
+        pool.query(sql, (err, result)=>{
             if (err) {
                 return res.status(500).json({ error: 'server error' });
             }

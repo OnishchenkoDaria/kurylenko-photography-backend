@@ -1,5 +1,5 @@
 const isMatch = require('./matching-check');
-const {db} = require('../database/db');
+const {pool} = require('../database/db');
 
 function LoginUser(req, res){
     if(req.session.user){
@@ -11,7 +11,7 @@ function LoginUser(req, res){
     const password = req.body.userpassword;
 
     const checkEmailQuery = `SELECT * FROM users WHERE email = '${email}'`;
-    db.query(checkEmailQuery, (err, result) => {
+    pool.query(checkEmailQuery, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'server error' });
         }
