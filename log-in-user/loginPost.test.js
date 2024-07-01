@@ -1,5 +1,5 @@
 const LoginUser = require('./loginPost');
-const {db} = require('../database/db');
+const {pool} = require('../database/db');
 const isMatch = require('./matching-check');
 
 //mocking the module of isMatch and replacing the implementation with jest.fn()
@@ -24,13 +24,13 @@ describe('Login function', () => {
 
         query = jest.fn();
 
-        db.query = query;
+        pool.query = query;
 
         err = null;
         result = [];
     });
 
-    test('should eturn server error if the active session exist' , () => {
+    test('should return server error if the active session exist' , () => {
         req.session.user = true;
         LoginUser(req,res);
 

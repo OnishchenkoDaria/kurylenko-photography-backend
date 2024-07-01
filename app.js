@@ -7,7 +7,9 @@ const basicAuth = require('express-basic-auth');
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
-    credentials: true,
+    credentials: true, // enable passing cookies, authorization headers, etc.
+    methods: 'GET, POST, PUT, DELETE',  // allow specified HTTP methods
+    allowedHeaders: 'Content-Type, *',  // allow specified headers
   }));
 
 const postRouter = require('./routes/posts.js');

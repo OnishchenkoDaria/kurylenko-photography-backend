@@ -1,5 +1,5 @@
 const getUserTable = require('./getTablePost');
-const {db} = require('../database/db');
+const {pool} = require('../database/db');
 
 describe('getUserTable function', () => {
     let res, req, json, status, query, err, result;
@@ -17,7 +17,7 @@ describe('getUserTable function', () => {
         res = { status, json };
 
         query = jest.fn();
-        db.query = query;
+        pool.query = query;
 
         err = null;
         result = [];

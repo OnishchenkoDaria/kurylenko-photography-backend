@@ -1,7 +1,5 @@
 const express = require('express')
 const multer = require('multer')
-const mysql = require('mysql')
-const cors = require('cors')
 
 const {pool, createPostsTable} = require('../database/db');
 
@@ -11,37 +9,28 @@ createPostsTable(pool);
 const postsRouter = express.Router()
 
 postsRouter.use(express.json());
-postsRouter.use (cors({
-    origin: 'http://localhost:5173',
-    credentials: true,  // enable passing cookies, authorization headers, etc.
-}))
 
-postsRouter.get('/', (request, response) => {
-    const query = `SELECT * FROM posts ORDER BY id DESC`
-    pool.query(query, (err, result) => {
-        if (err) {
-            response.status(500).send(`Can't get this post`)
-            console.error('Error in GET:', err)
-        }
-        else response.json(result)
-    })
+//display all posts in the blog
+const displayAll = require('../display-all-posts/DisplayAllPosts');
+
+postsRouter.get('/', (req, res) => {
+    displayAll(req, res);
 })
 
-postsRouter.get('/:id', (request, response) => {
-    const query = `SELECT * FROM posts WHERE id =${request.params.id}`
-    pool.query(query, (err, result) => {
-        if (err) {
-            response.status(500).send(`Can't get this post`)
-            console.error('Error in GET:', err)
-        }
-        else response.json(result)
-    })
+const displayPostById = require('../display-all-posts/GetPostById');
+
+//displaying post by id
+postsRouter.get('/:id', (req, res) => {
+    displayPostById(req, res);
 })
 
+//initializing the storing of media
 const storage = multer.diskStorage({
+    //where files will be stored
     destination: (req, file, cb) => {
         cb(null, '../frontend/public')
     },
+    //with what name they would be stored
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}_${Math.floor(Math.random() * 1000)}_${file.originalname}`)
     }
@@ -49,42 +38,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-postsRouter.post('/', upload.single('image'), (request, response) => {
-    const { title, content, date } = request.body
-    const imageURL = '../../public/' +request.file.filename
-    const post = {title, content, date, imageURL}
-    query = `INSERT INTO posts SET ?`
-    pool.query(query, post, (err, result) => {
-        if (err) {
-            response.status(500).send(`Post wasn't sent.`)
-            console.error('Error in POST:', err)
-        }
-        else response.send('Post created successfully!')
-    })
+//uploading new post
+const UploadPost = require('../work-with-posts/UploadPost');
+
+postsRouter.post('/', upload.single('image'), (req, res) => {
+    UploadPost(req, res);
 })
 
-postsRouter.patch('/:id', upload.none(), (request, response) => {
-    const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-    const update = [request.body.title, request.body.content, request.params.id]
-    console.log(update)
-    pool.query(query, update, (err, result) => {
-        if (err) {
-            response.status(500).send(`Update wasn't applied.`)
-            console.error('Error in PATCH:', err)
-        }
-        else response.send('Post updated successfully!')
-    })
+//updating post by id
+const UpdatePost = require('../work-with-posts/UpdatePost');
+
+postsRouter.patch('/:id', upload.none(), (req, res) => {
+    UpdatePost(req, res);
 })
 
-postsRouter.delete('/:id', (request, response) => {
-    const query = `DELETE FROM posts WHERE id = ${request.params.id}`
-    pool.query(query, (err, result) => {
-        if (err) {
-            response.status(500).send(`Post wasn't deleted`)
-            console.error('Error in DELETE:', err)
-        }
-        else response.send('Post deleted successfully!')
-    })
+//deleting the post by id
+const DeletePost = require('../work-with-posts/DeletePost');
+
+postsRouter.delete('/:id', (req, res) => {
+    DeletePost(res, req);
 })
 
 module.exports = postsRouter

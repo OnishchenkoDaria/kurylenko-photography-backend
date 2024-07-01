@@ -1,5 +1,5 @@
 const AddUserPayment = require('./addUserPaymentPost')
-const {db} = require('../database/db')
+const {pool} = require('../database/db')
 
 jest.mock('../set-time/setTimeDate', () => ({
     setTimeDate: jest.fn().mockReturnValue('2024-03-12 22:39:20')
@@ -13,7 +13,7 @@ describe('AddUserPayment function', () => {
         user_email = 'test@gmail.com'
 
         query = jest.fn();
-        db.query = query;
+        pool.query = query;
 
         err = null;
     })

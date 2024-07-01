@@ -20,15 +20,6 @@ insertAdminByDefault(pool);
 
 const registerRouter = express.Router();
 
-//add it to the database or just as outer one (in general app.js or smth)
-const corsOptions = {
-    origin: 'http://localhost:5173',
-    credentials: true,  // enable passing cookies, authorization headers, etc.
-    methods: 'GET, POST, PUT, DELETE',  // allow specified HTTP methods
-    allowedHeaders: 'Content-Type, *',  // allow specified headers
-};
-registerRouter.use(cors(corsOptions));
-
 //session implementation
 const crypto = require('crypto');
 

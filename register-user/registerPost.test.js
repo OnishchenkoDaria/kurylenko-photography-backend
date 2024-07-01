@@ -1,5 +1,5 @@
 const RegisterNewUser = require('./registerPost');
-const { db } = require('../database/db');
+const { pool } = require('../database/db');
 const Hashing = require('../hashing-data/hashing');
 const credentials = require('../credentials');
 
@@ -24,7 +24,7 @@ describe('RegisterNewUser function', () => {
         res = { status, json };
     
         query = jest.fn();
-        db.query = query;
+        pool.query = query;
     
         err = null;
         result = [];
@@ -77,7 +77,7 @@ describe('RegisterNewUser function', () => {
         expect(query).toHaveBeenCalled();
         
         //SELECT and INSERT calls
-        expect(db.query).toHaveBeenCalled();
+        expect(pool.query).toHaveBeenCalled();
         const { user, email, role } = req.session;
         expect(user).toBe('testname');
         expect(email).toBe('test@gmail.com');
@@ -100,7 +100,7 @@ describe('RegisterNewUser function', () => {
 
         expect(Hashing).toHaveBeenCalledWith('testpassword');
         expect(query).toHaveBeenCalled();
-        expect(db.query).toHaveBeenCalled();
+        expect(pool.query).toHaveBeenCalled();
         
         const { user, email, role } = req.session;
         expect(user).toBe('testname');
