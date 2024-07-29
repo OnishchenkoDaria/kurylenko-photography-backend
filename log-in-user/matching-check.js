@@ -27,7 +27,7 @@ async function isMatch(FoundPassword, found, res, req) {
         }
         else{
             //if passwords did not match
-            return res.status(409).json({ error: 'login failed' });
+            return res.status(409).json({ error: 'incorrect password' });
         }
     } 
     catch(err){
