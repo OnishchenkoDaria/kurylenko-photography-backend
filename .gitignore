@@ -28,3 +28,4 @@ dist-ssr
 # Security sensitive info
 be-keys.js
 credentials.js
+.env

@@ -1,8 +1,37 @@
+//setting server
 const express = require('express');
 const app = express();
+
+//documentation
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+
+//user session
 const basicAuth = require('express-basic-auth');
+
+//mongo database
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+const url = process.env.MONGODB_URI;
+mongoose.set('strictQuery',false);
+mongoose.connect(url);
+
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    email: String,
+})
+
+userSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();;
+        delete returnedObject._id;
+        delete returnedObject.__v;
+    }
+})
+
+const User = mongoose.model('user', userSchema);
 
 const cors = require('cors');
 app.use(cors({
@@ -51,7 +80,7 @@ const options = {
     };
     
 const swaggerSpecs = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
+app.use('/apo9i-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 const keys = require('./be-keys');
 const private_key = keys.private;
@@ -104,6 +133,12 @@ app.post('/', (req,res)=> {
 app.get('/', (req,res)=> {
     console.log('hello payment get')
     res.send("hi get")
+})
+
+app.get('/mongo/users', (req, res) => {
+    User.find({}).then(result => {
+        res.json(result);
+    })
 })
 
 const PORT = 3001
