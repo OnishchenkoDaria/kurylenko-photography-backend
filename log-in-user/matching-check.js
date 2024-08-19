@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const credentials = require('../credentials');
-const AdminEmail = credentials.email;
 
 async function isMatch(FoundPassword, found, res, req) {
     if (FoundPassword.length === 0 || found.length === 0) {

@@ -1,13 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const sessions = require('express-session');
 
-//header("Access-Control-Allow-Origin: http://localhost:5173");
-//creating our mysql database + connecting it with node (next function)
-
 const {pool, createUserTable, createOrdersTable, insertAdminByDefault} = require('../database/db');
-
 
 //users table creation
 createUserTable(pool);
@@ -19,9 +14,6 @@ createOrdersTable(pool);
 insertAdminByDefault(pool);
 
 const registerRouter = express.Router();
-
-//session implementation
-const crypto = require('crypto');
 
 const generateSecretKey = () => {
   return crypto.randomBytes(64).toString('hex');
@@ -201,7 +193,7 @@ registerRouter.post('/session-hook', (req, res) => {
  *                                  description: Error text                      
  */
 
-//to tiny to do it outer - remains in router
+//too tiny to do it outer - remains in router
 //handles the role check --- for posts
 registerRouter.get('/get-role', (req, res) => {
     const role = req.session.role

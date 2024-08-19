@@ -6,9 +6,6 @@ const app = express();
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
-//user session
-const basicAuth = require('express-basic-auth');
-
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -62,30 +59,27 @@ const keys = require('./be-keys');
 const private_key = keys.private;
 const crypto = require('crypto');
 
-//dealing with unknown endpoint
+/*//dealing with unknown endpoint
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
-}
+}*/
 
 app.post('/', (req,res)=> {   
-    const Recieved = req.body
-    //console.log(JSON.stringify(Recieved))
-    const dataRecieved = Recieved.data
-    //console.log('dataRecieved: ' , dataRecieved)
-    const signatureRecieved = Recieved.signature
-    //console.log('signatureRecieved: ' , signatureRecieved)
-    const jsonString = private_key + dataRecieved + private_key
-    //console.log(jsonString)
-    const sha1 = crypto.createHash('sha1').update(jsonString).digest('bin')
-   // console.log(sha1)
-    const signatureCreated = Buffer.from(sha1).toString('base64')
-   // console.log(signatureCreated)
+    const Recieved = req.body;
+    const dataRecieved = Recieved.data;
+    const signatureRecieved = Recieved.signature;
+
+    const jsonString = private_key + dataRecieved + private_key;
+    const sha1 = crypto.createHash('sha1').update(jsonString).digest('bin');
+    const signatureCreated = Buffer.from(sha1).toString('base64');
+
     if(signatureCreated === signatureRecieved){
-        const decodedString = Buffer.from(dataRecieved, 'base64').toString('utf-8')
-        console.log("decoded: " , decodedString)
-        const obj = JSON.parse(decodedString)
-        const status = obj.status
-        console.log(status)
+        const decodedString = Buffer.from(dataRecieved, 'base64').toString('utf-8');
+
+        const obj = JSON.parse(decodedString);
+        const status = obj.status;
+        console.log(status);
+
         if(status === 'success'){
             console.log('executed success')
             const price = obj.amount
@@ -115,12 +109,6 @@ app.get('/', (req,res)=> {
     console.log('hello payment get')
     res.send("hi get")
 })
-
-/*app.get('/mongo/users', (req, res) => {
-    User.find({}).then(result => {
-        res.json(result);
-    })
-})*/
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
