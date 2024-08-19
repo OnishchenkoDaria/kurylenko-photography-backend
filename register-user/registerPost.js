@@ -1,79 +1,50 @@
 const Hashing = require('../hashing-data/hashing');
-const {pool} = require('../database/db');
-const credentials = require('../credentials');
-const AdminEmail = credentials.email;
+//mongoDB schemas
+const  User = require('../models/User');
 
 async function RegisterNewUser(req, res){
     if(req.session.user){
-        console.log('an active session is going');
         return res.status(409).json({ error: 'an active session exist' });
     }
-    console.log('success');
-    
-    const name = req.body.username;
-    const email = req.body.useremail;
-    const password = req.body.userpassword;
 
-    // mysql syntax meaning : finding a matching email in the table with the recieved email
-    const checkEmailQuery = `SELECT * FROM users WHERE email = '${email}'`;
-    const result = await new Promise((resolve) => {
-        pool.query(checkEmailQuery, (err, result) => {
-            if (err) {
-                return res.status(500).json({ error: 'server error'});
-            }
-            // if found => result of matching search is empty arr or email(s)
-            resolve(result);
-        })
-    })
-    console.log(result);
-    
-    if (result.length > 0) {
-        console.log('lenth check');
-        return res.status(409).json({ error: 'email in use' });
-    }
-    console.log('after length check');
-    
-    //handling hashing
-    //added await and moved hashing to the function mani body
-    await Hashing(password)
-        .then((newHashedPassword) => {
-                
-            console.log(newHashedPassword);
-            
-            //initialization of the post object ---> inserting into mysql table with post
-            const post = {name: name , password: newHashedPassword, email: email};
-            console.log('orig: '  + name, email, password);
-            console.log('after hash: ' + post.name, post.email, post.password);
-           
-            //mysql syntax for inserting
-            const sql = 'INSERT INTO users SET ?';
-            pool.query(sql,post, (err) => {
-                console.log('passed');
-                if(err){
-                    console.error(err);
-                    return res.status(500).json({ error: 'server error' });
-                }
+    const { username: name, useremail: email, userpassword: password } = req.body;
 
-                //success case
-                console.log('user added!');
-                req.session.user = post.name;
-                req.session.email = post.email;
-                console.log('session: ' + req.session.user , req.session.email);
-                if(post.email === AdminEmail){
-                    req.session.role = 'admin';
-                } else {
-                    req.session.role = 'user';
-                }
-                                
-                return res.status(201).json({ message: 'user added' });
-            })
+    //checking for the user being already in mongo db
+    try{
+        const emailCheck = await User.find({ email: email })
+
+        if(emailCheck.length > 0){
+            return res.status(409).json({error: 'email in use'});
+        }
+
+        //handling hashing
+        //added await and moved hashing to the function mani body
+        const newHashedPassword = await Hashing(password)
+
+        const user = new User({
+            username: name,
+            password: newHashedPassword,
+            email: email,
         })
-        .catch((error) => {
-            console.log('catch block');
-            console.error(error);
+
+        user.save().then(savedUser => {
+            console.log("added new user: ", savedUser);
+        }).catch(err => {
+            console.log("error occurred during the saving: ", err);
+            return res.status(500).json({error: 'error occurred during the saving'});
+        });
+
+        //setting user session attributes
+        req.session.user = name;
+        req.session.email = email;
+        req.session.role = 'user';
+
+        return res.status(201).json({ message: 'user added' });
+        }
+        catch(err){
+            console.error(err);
             return res.status(500).json({ error: 'hashing error' });
-        })
-    
+        }
 }
 
-module.exports = RegisterNewUser
+module.exports = RegisterNewUser;

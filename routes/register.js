@@ -43,7 +43,7 @@ registerRouter.use(express.urlencoded({ extended: true }));
 
 registerRouter.use(bodyParser.json());
 
-//handling user regestration
+//handling user registration
 const RegisterNewUser = require('../register-user/registerPost');
 
 /**
@@ -121,6 +121,15 @@ const LoginUser = require('../log-in-user/loginPost');
 registerRouter.post('/log-in', (req,res) => {
     LoginUser(req, res);
 });
+
+registerRouter.get('/user', (req, res) => {
+    if(req.session){
+        return res.status(201).json(req.session);
+    }
+    else{
+        return res.status(409).json({ error: 'not session created' });
+    }
+})
 
 //handles the session check
 const SessionHookControl = require('../session-hook/sessionHookPost')

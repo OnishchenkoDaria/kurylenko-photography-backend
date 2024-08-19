@@ -9,30 +9,6 @@ const swaggerJsdoc = require('swagger-jsdoc');
 //user session
 const basicAuth = require('express-basic-auth');
 
-//mongo database
-const mongoose = require('mongoose');
-require('dotenv').config();
-
-const url = process.env.MONGODB_URI;
-mongoose.set('strictQuery',false);
-mongoose.connect(url);
-
-const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    email: String,
-})
-
-userSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString();;
-        delete returnedObject._id;
-        delete returnedObject.__v;
-    }
-})
-
-const User = mongoose.model('user', userSchema);
-
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -86,6 +62,11 @@ const keys = require('./be-keys');
 const private_key = keys.private;
 const crypto = require('crypto');
 
+//dealing with unknown endpoint
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
 app.post('/', (req,res)=> {   
     const Recieved = req.body
     //console.log(JSON.stringify(Recieved))
@@ -135,13 +116,13 @@ app.get('/', (req,res)=> {
     res.send("hi get")
 })
 
-app.get('/mongo/users', (req, res) => {
+/*app.get('/mongo/users', (req, res) => {
     User.find({}).then(result => {
         res.json(result);
     })
-})
+})*/
 
-const PORT = 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
