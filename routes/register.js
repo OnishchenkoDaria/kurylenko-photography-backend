@@ -274,8 +274,8 @@ const AddUserPayment = require('../process-liqpay-reaponse/addUserPaymentPost');
  *       500:
  *         description: Server error.
  */
-registerRouter.addPayment = (price) => {
-    AddUserPayment(user_email, price);
+registerRouter.addPayment = (price, req, res) => {
+    AddUserPayment(user_email, price, req, res);
 };
 
 //handles active users all payments table data print

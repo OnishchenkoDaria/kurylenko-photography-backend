@@ -83,8 +83,8 @@ app.post('/', (req,res)=> {
         if(status === 'success'){
             console.log('executed success')
             const price = obj.amount
-            registerRouter.addPayment(price)
-            return res.status(200).json({ message: 'payment successful' })
+            registerRouter.addPayment(price, req, res)
+            //return res.status(200).json({ message: 'payment successful' })
         }
         else if(status === 'error'){
             console.log('executed error')
