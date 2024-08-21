@@ -2,18 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sessions = require('express-session');
 
-const {pool, createUserTable, createOrdersTable, insertAdminByDefault} = require('../database/db');
+//const {pool, createUserTable, createOrdersTable, insertAdminByDefault} = require('../database/db');
 
 //users table creation
-createUserTable(pool);
+/*createUserTable(pool);
 
 //orders table creation
 createOrdersTable(pool);
 
 //credentials data is no longer used in router (used locally in functions)
-insertAdminByDefault(pool);
+insertAdminByDefault(pool);*/
 
 const registerRouter = express.Router();
+
+const crypto = require('crypto');
 
 const generateSecretKey = () => {
   return crypto.randomBytes(64).toString('hex');

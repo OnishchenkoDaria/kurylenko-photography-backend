@@ -35,7 +35,7 @@ async function RegisterNewUser(req, res){
         });
 
         //setting user session attributes
-        req.session.user = name;
+        req.session.username = name;
         req.session.email = email;
         req.session.role = 'user';
 

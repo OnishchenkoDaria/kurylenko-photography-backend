@@ -1,5 +1,6 @@
 const {setTimeDate} = require('../set-time/setTimeDate');
 const {pool} = require('../database/db');
+const Order = require('../models/order');
 
 function AddUserPayment(user_email, price) {
     const Today = setTimeDate();

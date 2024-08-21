@@ -65,16 +65,16 @@ const unknownEndpoint = (request, response) => {
 }*/
 
 app.post('/', (req,res)=> {   
-    const Recieved = req.body;
-    const dataRecieved = Recieved.data;
-    const signatureRecieved = Recieved.signature;
+    const Received = req.body;
+    const dataReceived = Received.data;
+    const signatureReceived = Received.signature;
 
-    const jsonString = private_key + dataRecieved + private_key;
+    const jsonString = private_key + dataReceived + private_key;
     const sha1 = crypto.createHash('sha1').update(jsonString).digest('bin');
     const signatureCreated = Buffer.from(sha1).toString('base64');
 
-    if(signatureCreated === signatureRecieved){
-        const decodedString = Buffer.from(dataRecieved, 'base64').toString('utf-8');
+    if(signatureCreated === signatureReceived){
+        const decodedString = Buffer.from(dataReceived, 'base64').toString('utf-8');
 
         const obj = JSON.parse(decodedString);
         const status = obj.status;
@@ -109,6 +109,25 @@ app.get('/', (req,res)=> {
     console.log('hello payment get')
     res.send("hi get")
 })
+
+//for unknown endpoint
+const unknownEndpoint = (req, res) => {
+    res.status(404).json({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint);
+
+const errorHandler = (err, req, res, next) => {
+    console.error(err.message)
+
+    if (err.name === 'CastError') {
+        return res.status(400).json({ error: 'invalid mongo db object id' })
+    }
+
+    next(err);
+}
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
