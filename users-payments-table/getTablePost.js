@@ -1,20 +1,20 @@
-const {pool} = require('../database/db');
+const User = require('../models/User');
 
 function getUserTable(req, res) {
-    if(!req.session.user){
+    if(!req.session){
         return res.status(409).json({ error: 'no active session' });
-    } else{
-        const email = req.session.email;
-        console.log(email);
-        let sql = `SELECT * FROM orders WHERE email ='${email}'`;
-        pool.query(sql, (err, result)=>{
-            if (err) {
-                return res.status(500).json({ error: 'server error' });
-            }
-            console.log(result);
-            return res.status(200).json(result);
-        })    
     }
+
+    console.log(req.session.email);
+
+    User.findOne({email: req.session.email})
+        .then((result) => {
+            return res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).json({ error: 'server error' });
+        })
 }
 
 module.exports = getUserTable

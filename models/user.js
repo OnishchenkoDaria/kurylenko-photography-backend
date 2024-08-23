@@ -9,10 +9,17 @@ mongoose.connect(url)
     .then(() => console.log('Connected users to the MongoDB.'))
     .catch(err => console.log('Error occurred connecting users to MongoDB: ', err))
 
+const orderSchema = new mongoose.Schema({
+    price: String,
+    date: String,
+    status: String,
+})
+
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
     email: String,
+    orders: [orderSchema],
 })
 
 userSchema.set('toJSON', {

@@ -11,9 +11,9 @@ async function RegisterNewUser(req, res){
 
     //checking for the user being already in mongo db
     try{
-        const emailCheck = await User.find({ email: email })
+        const emailCheck = await User.findOne({ email: email })
 
-        if(emailCheck.length > 0){
+        if(emailCheck !== null){
             return res.status(409).json({error: 'email in use'});
         }
 

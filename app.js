@@ -64,7 +64,7 @@ const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 }*/
 
-app.post('/', (req,res)=> {   
+app.post('/', async (req,res)=> {
     const Received = req.body;
     const dataReceived = Received.data;
     const signatureReceived = Received.signature;
@@ -83,8 +83,7 @@ app.post('/', (req,res)=> {
         if(status === 'success'){
             console.log('executed success')
             const price = obj.amount
-            registerRouter.addPayment(price, req, res)
-            //return res.status(200).json({ message: 'payment successful' })
+            await registerRouter.addPayment(price, res);
         }
         else if(status === 'error'){
             console.log('executed error')

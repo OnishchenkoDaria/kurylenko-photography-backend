@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
-const credentials = require('../credentials');
 
 async function isMatch(FoundPassword, found, res, req) {
-    if (FoundPassword.length === 0 || found.length === 0) {
-        throw new Error('Input values should be not empty');
+    if (FoundPassword === null || found.password === null) {
+        return res.status(404).json({ error: 'empty data provided' });
     }
 
     try{
@@ -29,7 +28,7 @@ async function isMatch(FoundPassword, found, res, req) {
             //if passwords did not match
             return res.status(409).json({ error: 'incorrect password' });
         }
-    } 
+    }
     catch(err){
         console.log("alert!");
         console.error(err);
