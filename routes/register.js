@@ -279,7 +279,7 @@ registerRouter.addPayment = (price, req, res) => {
 };
 
 //handles active users all payments table data print
-const getUserTable = require('../users-payments-table/getTablePost');
+const getUserTable = require('../users-payments-table/getUserOrdersPost');
 
 /**
  * @swagger

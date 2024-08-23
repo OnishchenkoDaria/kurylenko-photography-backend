@@ -1,4 +1,4 @@
-const getUserTable = require('./getTablePost');
+const getUserTable = require('./getUserOrdersPost');
 const {pool} = require('../database/db');
 
 describe('getUserTable function', () => {
