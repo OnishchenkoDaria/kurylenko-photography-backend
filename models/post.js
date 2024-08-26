@@ -15,13 +15,13 @@ const postSchema = new mongoose.Schema({
     date: String,
     likes: String,
     views: String,
-    imageUrl: String,
+    imageURL: String,
 })
 
 postSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
-        delete returnedObject._id;
+        //delete returnedObject._id;
         delete returnedObject.__v;
     }
 })

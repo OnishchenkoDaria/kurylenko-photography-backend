@@ -1,6 +1,8 @@
 const {pool} = require('../database/db');
+const Post = require('../models/Post');
 
 function UpdatePost (request, response) {
+
     const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
     const update = [request.body.title, request.body.content, request.params.id]
     console.log(update)
