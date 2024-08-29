@@ -1,18 +1,16 @@
-const {pool} = require('../database/db');
 const Post = require('../models/Post');
 
-function UpdatePost (request, response) {
-
-    const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-    const update = [request.body.title, request.body.content, request.params.id]
-    console.log(update)
-    pool.query(query, update, (err, result) => {
-        if (err) {
-            response.status(500).send(`Update wasn't applied.`)
-            console.error('Error in PATCH:', err)
-        }
-        else response.send('Post updated successfully!')
-    })
+async function UpdatePost (request, response) {
+    try {
+        await Post.findOneAndUpdate({_id: request.params.id}, {
+            title: request.body.title,
+            content: request.body.content,
+        }, {new: true});
+        return response.status(200).json({ message: 'post updated successfully' });
+    } catch(err){
+        console.log(err);
+        return response.status(500).json({error: 'error adding order record to user' });
+    }
 }
 
 module.exports = UpdatePost;

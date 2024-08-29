@@ -48,7 +48,7 @@ postsRouter.post('/', upload.single('image'), (req, res) => {
 //updating post by id
 const UpdatePost = require('../work-with-posts/UpdatePost');
 
-postsRouter.patch('/:id', upload.none(), (req, res) => {
+postsRouter.put('/update/:id', upload.none(), (req, res) => {
     UpdatePost(req, res);
 })
 
