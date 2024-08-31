@@ -1,10 +1,10 @@
 const express = require('express')
 const multer = require('multer')
 
-const {pool, createPostsTable} = require('../database/db');
+//const {pool, createPostsTable} = require('../database/db');
 
 //posts table cration
-createPostsTable(pool);
+//createPostsTable(pool);
 
 const postsRouter = express.Router()
 
@@ -55,8 +55,8 @@ postsRouter.put('/update/:id', upload.none(), (req, res) => {
 //deleting the post by id
 const DeletePost = require('../work-with-posts/DeletePost');
 
-postsRouter.delete('/:id', (req, res) => {
-    DeletePost(res, req);
+postsRouter.delete('/delete/:id', (req, res) => {
+    DeletePost(req, res);
 })
 
 module.exports = postsRouter

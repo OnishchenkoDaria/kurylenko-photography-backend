@@ -14,13 +14,19 @@ app.use(cors({
     allowedHeaders: 'Content-Type, *',  // allow specified headers
   }));
 
+/*
 const postRouter = require('./routes/posts.js');
 const registerRouter = require('./routes/register.js');
+*/
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+
+const postRouter = require('./routes/posts.js');
+const registerRouter = require('./routes/register.js')
 
 app.use('/api/posts', postRouter);
 app.use('/users', registerRouter);
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json())
 
 const options = {
     swaggerDefinition: {
