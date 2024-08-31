@@ -1,11 +1,6 @@
 const express = require('express')
 const multer = require('multer')
 
-//const {pool, createPostsTable} = require('../database/db');
-
-//posts table cration
-//createPostsTable(pool);
-
 const postsRouter = express.Router()
 
 postsRouter.use(express.json());
