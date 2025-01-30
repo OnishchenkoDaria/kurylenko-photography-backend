@@ -56,8 +56,7 @@ const options = {
 const swaggerSpecs = swaggerJsdoc(options);
 app.use('/apo9i-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
-const keys = require('./be-keys');
-const private_key = keys.private;
+const private_key = process.env.PRIVATE_MOCK_KEY;
 const crypto = require('crypto');
 
 /*//dealing with unknown endpoint

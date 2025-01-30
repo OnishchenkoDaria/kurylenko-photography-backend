@@ -1,6 +1,5 @@
 const {createUniqueNumber} = require('./setUniqueNumber');
 const crypto = require('crypto');
-const keys = require('../be-keys');
 
 function HashPaymentInfo(req, res){
     if(!req.session.user){
@@ -12,8 +11,8 @@ function HashPaymentInfo(req, res){
         console.log(value);
         
         const id = createUniqueNumber();
-        const private_key = keys.private;
-        const public_key = keys.public;
+        const private_key = process.env.PRIVATE_MOCK_KEY;
+        const public_key = process.env.PUBLIC_MOCK_KEY;
         const json_string = {
             "public_key": public_key,
             "version": "3",
