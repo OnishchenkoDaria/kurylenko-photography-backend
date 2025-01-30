@@ -8,7 +8,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 const cors = require('cors');
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://kurylenko-photography-frontend.onrender.com',
     credentials: true, // enable passing cookies, authorization headers, etc.
     methods: 'GET, POST, PUT, DELETE',  // allow specified HTTP methods
     allowedHeaders: 'Content-Type, *',  // allow specified headers

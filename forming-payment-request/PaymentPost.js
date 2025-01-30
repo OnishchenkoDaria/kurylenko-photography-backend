@@ -22,7 +22,7 @@ function HashPaymentInfo(req, res){
             "description": "test",
             "order_id": id,
             "result_url": "http://localhost:5173/account-page",
-            "server_url": "https://ant-maximum-blindly.ngrok-free.app/"
+            "server_url": "https://kurylenko-photography-backend.onrender.com/"
         };
 
         const jsonString = JSON.stringify(json_string);
