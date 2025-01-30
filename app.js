@@ -7,11 +7,12 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const cors = require('cors');
+
 app.use(cors({
-    origin: 'https://kurylenko-photography-frontend.onrender.com',
+    origin: ['https://kurylenko-photography-frontend.onrender.com'], //frontend hosted
     credentials: true, // enable passing cookies, authorization headers, etc.
-    methods: 'GET, POST, PUT, DELETE',  // allow specified HTTP methods
-    allowedHeaders: 'Content-Type, *',  // allow specified headers
+    methods: ['GET, POST, PUT, DELETE'],  // allow specified HTTP methods
+    allowedHeaders: ['Content-Type, Access-Control-Allow-Origin, *'],  // allow specified headers
   }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -32,13 +33,13 @@ const options = {
         },
         servers: [
           {
-            url: "http://localhost:3001",
+            url: "https://kurylenko-photography-backend.onrender.com",
           },
         ],
         components: {
           securitySchemes: {
             bearerAuth: {
-              type: "http",
+              type: "https",
               scheme: "bearer",
               bearerFormat: "JWT",
             },

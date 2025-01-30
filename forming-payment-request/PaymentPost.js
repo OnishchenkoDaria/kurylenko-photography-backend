@@ -21,7 +21,7 @@ function HashPaymentInfo(req, res){
             "currency": "UAH",
             "description": "test",
             "order_id": id,
-            "result_url": "http://localhost:5173/account-page",
+            "result_url": "https://kurylenko-photography-frontend.onrender.com/account-page",
             "server_url": "https://kurylenko-photography-backend.onrender.com/"
         };
 
