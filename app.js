@@ -1,6 +1,30 @@
 //setting server
 const express = require('express');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+require('dotenv').config();
+
 const app = express();
+const store = new MongoDBStore({
+    uri: process.env.MONGODB_URI,
+    databaseName: 'users',
+    collection: 'sessions',
+    expires: 1000 * 60 * 60 * 24 * 2, //is stored for 2 days (in milliseconds)
+    connectionOptions: {
+        serverSelectionTimeoutMS: 10000 //connectivity or working around deprecation warnings
+    }
+}, function(error) {
+    if (error) {
+        console.error("Error while connecting to the MongoDB: ", error);
+    } else {
+        console.log("MongoDB Session Store Connected!");
+    }
+});
+
+//catch errors
+store.on('error', function(error) {
+    console.error("Session Store Error: ", error);
+});
 
 //documentation
 const swaggerUi = require('swagger-ui-express');
@@ -17,6 +41,25 @@ app.use(cors({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+
+const crypto = require('crypto');
+
+const generateSecretKey = () => {
+    return crypto.randomBytes(64).toString('hex');
+};
+
+app.use( session({
+    secret: generateSecretKey(),
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 48, //sets cookie for 48 hours
+        secure: true,  //HTTPS protocol
+        httpOnly: true, //prevent access from client-side JS
+        sameSite: 'None' //cors
+    },
+    store: store,
+    resave: false, // resaves only in case of change
+    saveUninitialized: false,
+}))
 
 const postRouter = require('./routes/posts.js');
 const registerRouter = require('./routes/register.js')
@@ -58,7 +101,6 @@ const swaggerSpecs = swaggerJsdoc(options);
 app.use('/apo9i-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 const private_key = process.env.PRIVATE_MOCK_KEY;
-const crypto = require('crypto');
 
 /*//dealing with unknown endpoint
 const unknownEndpoint = (request, response) => {

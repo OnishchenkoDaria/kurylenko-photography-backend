@@ -1,39 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const sessions = require('express-session');
-//saving session information to mongo collection
-//(express uses memory store which does not persist across multiple server instances -- Render uses ephemeral storage)
-const MongoStore = require('connect-mongo')
-
 const registerRouter = express.Router();
-
-const crypto = require('crypto');
-
-const generateSecretKey = () => {
-  return crypto.randomBytes(64).toString('hex');
-};
-
-registerRouter.use(
-    sessions({
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 48, //sets cookie for 48 hours
-            secure: true,  //HTTPS protocol
-            httpOnly: true, //prevent access from client-side JS
-            sameSite: 'None' //cors
-        },
-        secret:generateSecretKey(),
-        resave: false, // resaves only in case of change
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: process.env.MONGODB_URI,
-            collectionName: 'sessions',
-            ttl: 2 * 24 * 60 * 60 //saves for 2 days
-        })
-    })
-);
-
-registerRouter.use(express.json());
-registerRouter.use(express.urlencoded({ extended: true }));
 
 registerRouter.use(bodyParser.json());
 
