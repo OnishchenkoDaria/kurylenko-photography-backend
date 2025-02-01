@@ -1,8 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const registerRouter = express.Router();
-
-registerRouter.use(bodyParser.json());
 
 //handling user registration
 const RegisterNewUser = require('../register-user/registerPost');

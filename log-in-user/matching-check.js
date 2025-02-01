@@ -22,6 +22,7 @@ async function isMatch(FoundPassword, found, res, req) {
             } else{
                 req.session.role = 'user';
             }
+            console.log('Session after login:', req.session);
             return res.status(201).json({ message: 'login passed' });
         }
         else{

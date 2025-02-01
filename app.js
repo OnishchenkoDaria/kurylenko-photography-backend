@@ -1,4 +1,5 @@
 //setting server
+const bodyParser = require('body-parser');
 const express = require('express');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -39,17 +40,17 @@ app.use(cors({
     allowedHeaders: ['Content-Type, Access-Control-Allow-Origin, *'],  // allow specified headers
   }));
 
+//enable body parsing for incoming JSON and form data
+app.use(bodyParser.json());  // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));  // for parsing application/urlencoded
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
 const crypto = require('crypto');
 
-const generateSecretKey = () => {
-    return crypto.randomBytes(64).toString('hex');
-};
-
 app.use( session({
-    secret: generateSecretKey(),
+    secret: process.env.SESSION_SECRET,
     cookie: {
         maxAge: 1000 * 60 * 60 * 48, //sets cookie for 48 hours
         secure: true,  //HTTPS protocol
