@@ -2,8 +2,8 @@ const express = require('express');
 const registerRouter = express.Router();
 const bodyParser = require('body-parser');
 
-registerRouter().use(bodyParser.json());  // for parsing application/json
-registerRouter().use(bodyParser.urlencoded({ extended: true }));  // for parsing application/urlencoded
+registerRouter.use(bodyParser.json());  // for parsing application/json
+registerRouter.use(bodyParser.urlencoded({ extended: true }));  // for parsing application/urlencoded
 
 //handling user registration
 const RegisterNewUser = require('../register-user/registerPost');
