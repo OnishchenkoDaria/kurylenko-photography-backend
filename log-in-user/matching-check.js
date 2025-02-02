@@ -15,6 +15,7 @@ async function isMatch(FoundPassword, found, res, req) {
             req.session.user = found.username;
             req.session.email = found.email;
             req.session.user_id = found._id.toString();
+            req.session.isAuth = true;
 
             //comparison with admin's info
             if(found.email === process.env.ADMIN_EMAIL){

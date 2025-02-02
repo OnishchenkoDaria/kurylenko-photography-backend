@@ -38,6 +38,7 @@ async function RegisterNewUser(req, res){
         req.session.username = name;
         req.session.email = email;
         req.session.role = 'user';
+        req.session.isAuth = true;
 
         return res.status(201).json({ message: 'user added' });
         }
