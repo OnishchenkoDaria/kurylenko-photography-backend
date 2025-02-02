@@ -27,12 +27,14 @@ async function RegisterNewUser(req, res){
             email: email,
         })
 
-        user.save().then(savedUser => {
-            console.log("added new user: ", savedUser);
-        }).catch(err => {
-            console.log("error occurred during the saving: ", err);
-            return res.status(500).json({error: 'error occurred during the saving'});
-        });
+        const savedUser = await user.save();
+
+        if(savedUser){
+            console.log("Added new user: ", savedUser);
+        } else {
+            console.log("Error occurred during the saving: ", err);
+            return res.status(500).json({error: 'Error occurred during the saving'});
+        }
 
         //setting user session attributes
         req.session.username = name;
