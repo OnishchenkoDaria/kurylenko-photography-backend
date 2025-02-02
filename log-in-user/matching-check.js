@@ -24,7 +24,14 @@ async function isMatch(FoundPassword, found, res, req) {
                 req.session.role = 'user';
             }
             console.log('Session after login:', req.session);
-            return res.status(201).json({ message: 'login passed' });
+
+            req.session.save(err => {
+                if(err){
+                    console.error('Session save error: ' + err);
+                    return res.status(500).json({ error: 'Session save error' });
+                }
+                return res.status(201).json({ message: 'login passed' });
+            });
         }
         else{
             //if passwords did not match

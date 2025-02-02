@@ -33,19 +33,19 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 const cors = require('cors');
 
-app.use(cors({
-    origin: ['https://kurylenko-photography-frontend.onrender.com'], //frontend hosted
-    credentials: true, // enable passing cookies, authorization headers, etc.
-    methods: ['GET, POST, PUT, DELETE'],  // allow specified HTTP methods
-    allowedHeaders: ['Content-Type, Access-Control-Allow-Origin, *'],  // allow specified headers
-  }));
-
 //enable body parsing for incoming JSON and form data
 app.use(bodyParser.json());  // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));  // for parsing application/urlencoded
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+
+app.use(cors({
+    origin: ['https://kurylenko-photography-frontend.onrender.com'], //frontend hosted
+    credentials: true, // enable passing cookies, authorization headers, etc.
+    methods: ['GET, POST, PUT, DELETE'],  // allow specified HTTP methods
+    allowedHeaders: ['Content-Type, Access-Control-Allow-Origin, *'],  // allow specified headers
+}));
 
 const crypto = require('crypto');
 

@@ -40,12 +40,17 @@ async function RegisterNewUser(req, res){
         req.session.role = 'user';
         req.session.isAuth = true;
 
-        return res.status(201).json({ message: 'user added' });
-        }
-        catch(err){
-            console.error(err);
-            return res.status(500).json({ error: 'hashing error' });
-        }
+        req.session.save(err => {
+            if(err){
+                console.error('Session save error: ' + err);
+                return res.status(500).json({ error: 'Session save error' });
+            }
+            return res.status(201).json({ message: 'User added successfully' });
+        })
+    } catch(err){
+        console.error(err);
+        return res.status(500).json({ error: 'Hashing error on the server' });
+    }
 }
 
 module.exports = RegisterNewUser;
