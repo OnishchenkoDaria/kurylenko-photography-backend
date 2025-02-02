@@ -1,11 +1,41 @@
 //setting server
-const bodyParser = require('body-parser');
 const express = require('express');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config();
 
 const app = express();
+
+//documentation
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+
+const cors = require('cors');
+
+app.set('trust proxy', true);
+
+app.use(cors({
+    origin: ['https://kurylenko-photography-frontend.onrender.com'], //frontend hosted
+    credentials: true, // enable passing cookies, authorization headers, etc.
+    methods: ['GET, POST, PUT, DELETE'],  // allow specified HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // allow specified headers
+}));
+
+//ensures the browser allows cross-origin requests and cookies when frontend and backend are hosted on different domains
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://kurylenko-photography-frontend.onrender.com'); //specifies which domains can access this backend
+    res.header('Access-Control-Allow-Credentials', 'true');  //allows the browser to send and receive cookies across origins
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); //defines http methods
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); //custom headers
+    next();
+});
+
+//enable body parsing for incoming JSON and form data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+const crypto = require('crypto');
+
 const store = new MongoDBStore({
     uri: process.env.MONGODB_URI,
     databaseName: 'users',
@@ -27,28 +57,6 @@ store.on('error', function(error) {
     console.error("Session Store Error: ", error);
 });
 
-//documentation
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
-
-const cors = require('cors');
-
-//enable body parsing for incoming JSON and form data
-app.use(bodyParser.json());  // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }));  // for parsing application/urlencoded
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json())
-
-app.use(cors({
-    origin: ['https://kurylenko-photography-frontend.onrender.com'], //frontend hosted
-    credentials: true, // enable passing cookies, authorization headers, etc.
-    methods: ['GET, POST, PUT, DELETE'],  // allow specified HTTP methods
-    allowedHeaders: ['Content-Type, Access-Control-Allow-Origin, *'],  // allow specified headers
-}));
-
-const crypto = require('crypto');
-
 app.use( session({
     secret: process.env.SESSION_SECRET,
     cookie: {
@@ -58,7 +66,7 @@ app.use( session({
         sameSite: 'None' //cors
     },
     store: store,
-    resave: false, // resaves only in case of change
+    resave: true, // resaves only in case of change
     saveUninitialized: false,
 }))
 
