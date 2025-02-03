@@ -60,8 +60,8 @@ store.on('error', function(error) {
 app.use( session({
     secret: process.env.SESSION_SECRET,
     store: store,
-    resave: true, // resaves only in case of change
-    saveUninitialized: true,
+    resave: false, // resaves only in case of change
+    saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 48, //sets cookie for 48 hours
         secure: true,  //HTTPS protocol
