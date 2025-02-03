@@ -37,8 +37,10 @@ async function RegisterNewUser(req, res){
         }
 
         //setting user session attributes
-        req.session.username = name;
+        req.session.user = name;
         req.session.email = email;
+        req.session.user_id = savedUser._id.toString() ;
+        //as admin is in db by default
         req.session.role = 'user';
         req.session.isAuth = true;
 
