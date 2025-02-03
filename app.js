@@ -22,13 +22,13 @@ app.use(cors({
 }));
 
 //ensures the browser allows cross-origin requests and cookies when frontend and backend are hosted on different domains
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://kurylenko-photography-frontend.onrender.com'); //specifies which domains can access this backend
     res.header('Access-Control-Allow-Credentials', 'true');  //allows the browser to send and receive cookies across origins
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); //defines http methods
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); //custom headers
     next();
-});
+});*/
 
 //enable body parsing for incoming JSON and form data
 app.use(express.urlencoded({ extended: true }));
@@ -59,16 +59,15 @@ store.on('error', function(error) {
 
 app.use( session({
     secret: process.env.SESSION_SECRET,
+    store: store,
+    resave: true, // resaves only in case of change
+    saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 48, //sets cookie for 48 hours
         secure: true,  //HTTPS protocol
         httpOnly: true, //prevent access from client-side JS
         sameSite: 'None', //cors
-        domain: '.onrender.com' //acceptable domain for third party cookies
     },
-    store: store,
-    resave: true, // resaves only in case of change
-    saveUninitialized: false,
 }))
 
 const postRouter = require('./routes/posts.js');
