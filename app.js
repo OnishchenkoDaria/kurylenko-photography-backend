@@ -67,7 +67,7 @@ app.use( session({
         domain: '.onrender.com' //acceptable domain for third party cookies
     },
     store: store,
-    resave: false, // resaves only in case of change
+    resave: true, // resaves only in case of change
     saveUninitialized: false,
 }))
 
