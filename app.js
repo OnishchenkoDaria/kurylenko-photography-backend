@@ -63,10 +63,11 @@ app.use( session({
         maxAge: 1000 * 60 * 60 * 48, //sets cookie for 48 hours
         secure: true,  //HTTPS protocol
         httpOnly: true, //prevent access from client-side JS
-        sameSite: 'None' //cors
+        sameSite: 'None', //cors
+        domain: '.onrender.com' //acceptable domain for third party cookies
     },
     store: store,
-    resave: true, // resaves only in case of change
+    resave: false, // resaves only in case of change
     saveUninitialized: false,
 }))
 
